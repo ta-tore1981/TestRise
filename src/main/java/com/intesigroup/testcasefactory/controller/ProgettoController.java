@@ -61,6 +61,7 @@ public class ProgettoController {
 		if (progettoService.getProgetto(idProgetto).isPresent()) progettoService.delete(idProgetto);
 		return("redirect:/progetto/formProgetto");
 	}
+	//Nuovi endpoint per nuova interfaccia
 	@GetMapping("/progetto/visualizzaById")
 	public String cercaProgetto(@RequestParam(name="id")long id, Model model) {
 		Progetto progetto=progettoService.getProgetto(id).get();
