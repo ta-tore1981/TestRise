@@ -9,11 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.Data;
 
 @Entity
 @Table(name="testcase")
-@Data
 
 public class TestCase implements Serializable{
 	private static final long serialVersionUID = 1034800209864503975L;

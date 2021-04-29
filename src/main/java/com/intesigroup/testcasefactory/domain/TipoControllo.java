@@ -9,11 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.Data;
 
 @Entity
 @Table(name="tipo_controllo")
-@Data
+
 
 public class TipoControllo implements Serializable{
 

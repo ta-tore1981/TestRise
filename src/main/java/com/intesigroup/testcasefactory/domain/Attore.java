@@ -14,11 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Data;
 
 @Entity
 @Table(name="attore")
-@Data
+
 public class Attore implements Serializable {
 
 	private static final long serialVersionUID = -3058717740254774919L;

@@ -16,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
-
 @Entity
 @Table(name="interfaccia")
 public class Interfaccia implements Serializable{

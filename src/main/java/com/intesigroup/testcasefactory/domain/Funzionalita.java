@@ -16,11 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
 
 @Entity
 @Table(name="funzionalita")
-@Data
 
 public class Funzionalita {
 	

@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/custom.css}" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
           <script src="../../assets/js/html5shiv.js"></script>
@@ -34,14 +33,17 @@
             </div>
         </div>
         <div class="row">
-            		<div class="list-group col-md-2">
+            <div class="col-md-2 border">
+            		<div class="list-group">
   					<!--   <button type="button" th:each="progetto : ${listaProgetto}" class="list-group-item list-group-item-action" th:text="${progetto.nome}" th:href="@{//projectNew/view(idProgetto=${progetto.id})}"> --> 
                     	<a class="list-group-item list-group-item-action active" th:text="@{Nuovo progetto}" th:href="@{/projectNew/view}"/>
                     	<a th:each="progetto : ${listaProgetto}" class="list-group-item list-group-item-action" th:text="${progetto.nome}" th:href="@{/projectNew/view(idProgetto=${progetto.id})}"/>
-            		</div>
-            <div class="col-md-10 border">
-					<h1 th:if= ${progetto.id} &le; 0>Modifica</h1>
-					<h1 th:unless= ${progetto.id} &le; 0>Inserisci</h1>
+                    </div>
+            </div>
+            <div class="col-md-10 ml-auto border">
+				<div class="content">
+					<h1 th:if= ${progetto.id} &le; 0>Modifica progetto</h1>
+					<h1 th:unless= ${progetto.id} &le; 0>Inserisci progetto</h1>
 					<form action="#" th:action="@{/projectNew/insert}" th:object="${progetto}" method="post">   
 						
 						<input type="hidden" th:field="*{id}" >
@@ -62,11 +64,11 @@
 						<input type="submit" name="action" value="Inserisci_progetto" />
 						<input th:if=(*{id}!=0) type="submit" name="action" value="Modifica_progetto" />
 						<input th:if=(*{id}!=0) type="submit" name="action" value="Cancella_progetto" />
-						<input th:if=(*{id}!=0) type="submit" name="action" value="Modifica_interfacce" />
 						<input type="reset" value="Reset">
 						
 					</p>
 				</form>
+			</div>
         </div>
         	
        </div>
