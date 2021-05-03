@@ -32,7 +32,7 @@ public class FunzionalitaServiceImpl implements FunzionalitaService{
 		return funzionalitaService.findById(id);
 	}
 	@Override
-	public void deleteById(long idFunzionalita) {
+	public void delete(long idFunzionalita) {
 		funzionalitaService.deleteById(idFunzionalita);
 	}
 

@@ -6,3 +6,6 @@
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
 }
+.list-group-item.list-group-item-action.selected{
+    background-color:red;
+}

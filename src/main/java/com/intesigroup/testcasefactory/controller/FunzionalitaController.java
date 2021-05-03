@@ -11,106 +11,94 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.intesigroup.testcasefactory.domain.Focus;
 import com.intesigroup.testcasefactory.domain.Funzionalita;
 import com.intesigroup.testcasefactory.domain.Interfaccia;
-import com.intesigroup.testcasefactory.domain.Progetto;
-import com.intesigroup.testcasefactory.service.FocusService;
+import com.intesigroup.testcasefactory.entityView.FunzionalitaViewCRUDForm;
 import com.intesigroup.testcasefactory.service.FunzionalitaService;
 import com.intesigroup.testcasefactory.service.InterfacciaService;
+import com.intesigroup.testcasefactory.service.ProgettoService;
 
 @Controller
 public class FunzionalitaController {
-	Logger logger = LoggerFactory.getLogger(FunzionalitaController.class);
-	@Autowired
+	@Autowired 
 	FunzionalitaService funzionalitaService;
-	@Autowired
-	FocusService focusService;
 	@Autowired
 	InterfacciaService interfacciaService;
 	
-	//Interfaccia per inserimento funzionalita
-	@GetMapping("/funzionalita/formFunzionalita")
-	public String formInterfaccia(@RequestParam(name="idInterfaccia") long idInterfaccia, Funzionalita funzionalita,Model model) {
-		//da inserire eccezione nel caso non si trovino progetti legati all'interfaccia
-		List<Funzionalita> funzionalitaVis = new ArrayList<Funzionalita>(interfacciaService.getInterfaccia(idInterfaccia).get().getFunzionalita());
-		funzionalitaVis.sort(Comparator.comparing(Funzionalita::getId));
-		model.addAttribute("funzionalitaVis",funzionalitaVis);
-		model.addAttribute("idInterfaccia", idInterfaccia);
-		return "inserimentoFunzionalita";
-	}
-	//EndPoint salvataggio funzionalita
-	@PostMapping("/funzionalita/inserisci")
-	public String insFunzionalita(@ModelAttribute Funzionalita funzionalita,long idInterfaccia, Model model) {
-		if (funzionalita!=null) {
-			Interfaccia interfaccia = interfacciaService.getInterfaccia(idInterfaccia).get();
-			interfaccia.getFunzionalita().add(funzionalita);
-			funzionalita.setInterfaccia(interfaccia);
+	Logger logger = LoggerFactory.getLogger(FunzionalitaController.class);
+	
+
+	@PostMapping("/funzionalita/formFunzionalita")
+	public String insFunzionalita(@ModelAttribute FunzionalitaViewCRUDForm form,String action, Model model) {
+		Funzionalita funzionalita= new Funzionalita();
+		if (action.equals("Inserisci")){
+			funzionalita.setId(0);
+			funzionalita.setInterfaccia(interfacciaService.getInterfaccia(form.getIdInterfaccia()).orElse(null));
+			funzionalita.setDescrizione(form.getDescrizione());
+			funzionalita.setCodice(form.getCodice());		
+			funzionalita.setNome(form.getNome());
 			funzionalitaService.save(funzionalita);
-			List<Funzionalita> funzionalitaVis = new ArrayList<Funzionalita>(interfaccia.getFunzionalita());
-			model.addAttribute("interfacciaVis",funzionalitaVis);
-			model.addAttribute("idProgetto",idInterfaccia);
-			return "redirect:/funzionalita/formFunzionalita?idInterfaccia="+idInterfaccia;
+			return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getIdInterfaccia());
 		}
-		return "redirect:/funzionalita/formFunzionalita?idInterfaccia="+idInterfaccia;
-	}
-	
-	// endpoint modifica funzionalita
-		@PostMapping("/funzionalita/modifica")
-		public String modificaFunzionalita(long idFunzionalita, Funzionalita funzionalita) {
-			Funzionalita funzionalitaOld = funzionalitaService.getFunzionalita(idFunzionalita).get();
-			funzionalitaOld.setCodice(funzionalita.getCodice());
-			funzionalitaOld.setDescrizione(funzionalita.getDescrizione());
-			funzionalitaOld.setNome(funzionalita.getNome());
-			funzionalitaService.save(funzionalitaOld);
-			return "redirect:/funzionalita/formFunzionalita?idProgetto="+funzionalitaOld.getInterfaccia().getId(); 
-			
+		if (action.equals("Modifica")){
+			funzionalita= funzionalitaService.getFunzionalita(form.getId()).orElse(null);
+			funzionalita.setDescrizione(form.getDescrizione());
+			funzionalita.setCodice(form.getCodice());		
+			funzionalita.setNome(form.getNome());
+			funzionalitaService.save(funzionalita);
+			return("redirect:/funzionalita/visualizza?idSelected="+form.getId()+"&idInterfaccia="+form.getIdInterfaccia());
 		}
-	
-	//endpoint cancellazione funzionalita
-	@PostMapping ("/funzionalita/cancella")
-	public String cancellazioneFunzionalita(long idFunzionalita,long idInterfaccia) {
-	       Funzionalita funzionalita= funzionalitaService.getFunzionalita(idFunzionalita).orElse(null);
-	        if (funzionalita!=null) {
-	        	funzionalitaService.deleteById(idFunzionalita);
-	        }
-	        // qui ci deve essere l'errore nel caso si cerca di cancellare la funzionalita gia cancellata
-	        return "redirect:/funzionalita/formFunzionalita?idInterfaccia="+ idInterfaccia;
+		if (action.equals("Cancella")){
+			funzionalitaService.delete(form.getId());
+			return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getIdInterfaccia());
+		}
+		if (action.equals("Focus")) {
+			return("redirect:/focus/visualizza?idFunzionalita="+form.getId());
+		}
+		if (action.equals("Interfaccia")) {
+			Long idProgetto = interfacciaService.getInterfaccia(form.getIdInterfaccia()).get().getProgetto().getId(); 
+			return("redirect:/interfaccia/visualizza?idProgetto="+idProgetto);
+		}
+		return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getIdInterfaccia());
 	}
-	
 	
 	@GetMapping("/funzionalita/visualizza")
-	public String visualizzaFunzionalita(Model model) {
-		List<Funzionalita> funzionalita = funzionalitaService.findAll();
-		model.addAttribute("funzionalita",funzionalita);
-		return "visualizzaFunzionalita";
-	}
-	@PostMapping("/funzionalita/inserimentoFunzionalita")
-	public String aggiungiFunzionalita(Funzionalita funzionalita) {
-		funzionalitaService.save(funzionalita);
+	public String  projectView1(@RequestParam(required=false, name="idSelected") Long idSelected, @RequestParam(required=true, name="idInterfaccia") Long idInterfaccia, Model model) {
+		FunzionalitaViewCRUDForm form= new FunzionalitaViewCRUDForm();
+		List<Funzionalita> funzionalitaList;
+		Funzionalita funzionalita;
+		Interfaccia interfaccia = interfacciaService.getInterfaccia(idInterfaccia).orElse(null);
+		if (interfaccia!=null) {
+			funzionalitaList = new ArrayList<Funzionalita>(interfaccia.getFunzionalita());
+			funzionalitaList.sort(Comparator.comparing(Funzionalita::getId));
+			//valorizzo i valori di output con la lista delle interfacce
+			if (idSelected!=null) {
+				funzionalita = funzionalitaList.stream().filter(u->(u.getId()==idSelected)).findAny().orElse(null);
+				//nel caso la funzionalita non esite imposta l'ID di output uguale a null per creare una nuova funzionalita
+				if (funzionalita==null) {
+					form.setId(Long.valueOf(0));
+					form.setIdInterfaccia(idInterfaccia);
+				}
+				else {
+					form.setCodice(funzionalita.getCodice());
+					form.setDescrizione(funzionalita.getDescrizione());
+					form.setNome(funzionalita.getNome());
+					form.setId(funzionalita.getId());
+					form.setIdInterfaccia(idInterfaccia);
+					
+	      		}
+			}
+			else {
+				form.setIdInterfaccia(idInterfaccia);
+				form.setId(Long.valueOf(0));
+			}
+		}
+		else return "redirect:/erroPage?errorStr=l'funzionalita selezionata non ha associato alcun interfaccia";
+		model.addAttribute("form",form);
+		model.addAttribute("funzionalitaList",funzionalitaList);
 		return "inserimentoFunzionalita";
 	}
-	@GetMapping("/funzionalita/visualizzaById")
-	public String cercaFunzionalita(@RequestParam(name="id") long id,Model model) {
-		Funzionalita funzionalita=funzionalitaService.getFunzionalita(id).get();
-		model.addAttribute("funzionalita", funzionalita);
-		return "visualizzaFunzionalita";
-	}
-	@GetMapping("/funzionalita/visualizzaFocus")
-	public String visualizzaFocus(@RequestParam(name="id") long id,Model model) {
-		List<Focus> focus= new ArrayList<Focus>();
-		Funzionalita funzionalita = funzionalitaService.getFunzionalita(id).get();
-		if (funzionalita.getFocus()!=null) {
-			focus = new ArrayList<>(funzionalita.getFocus());
-			logger.info("sono entrato");
-		}
-		model.addAttribute("funzionalita",focus);
-		return "visualizzaFocus";
-	}
-
-
 }

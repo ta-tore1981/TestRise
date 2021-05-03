@@ -3,7 +3,6 @@ package com.intesigroup.testcasefactory.controller;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,73 +11,76 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.intesigroup.testcasefactory.domain.Interfaccia;
 import com.intesigroup.testcasefactory.domain.Progetto;
-import com.intesigroup.testcasefactory.service.InterfacciaService;
+import com.intesigroup.testcasefactory.entityView.ProgettoViewCRUDForm;
 import com.intesigroup.testcasefactory.service.ProgettoService;
 
 @Controller
 @RequestMapping("/")
 public class ProgettoController {
-	Logger logger = LoggerFactory.getLogger(ProgettoController.class);
 	@Autowired
 	ProgettoService progettoService;
 	
-	@Autowired
-	InterfacciaService interfacciaService;
+	Logger logger = LoggerFactory.getLogger(ProgettoController.class);
+	
 
-	@GetMapping("/progetto/formProgetto")
-	public String formProgetto(Progetto progetto,Model model) {
-		//da inserire eccezione nel caso non si trovino progetti legati all'progetto
-		List<Progetto> progettoVis = progettoService.findAll();
-		progettoVis.sort(Comparator.comparing(Progetto::getId));
-		model.addAttribute("progettoVis",progettoVis);
-		return "inserimentoProgetto";
-	}
-	@PostMapping("/progetto/inserisci")
-	public String insProgetti(@ModelAttribute Progetto progetto,Model model) {
-		if (progetto!=null) {	
+	@PostMapping("/progetto/formProgetto")
+	public String insProgetti(@ModelAttribute ProgettoViewCRUDForm form,String action, Model model) {
+		Progetto progetto= new Progetto();
+		if (action.equals("Inserisci")){
+			progetto.setId(0);
+			progetto.setDescrizione(form.getDescrizione());
+			progetto.setCodice(form.getCodice());		
+			progetto.setNome(form.getNome());
 			progettoService.save(progetto);
-			model.addAttribute("progetto", progetto);
-			return("redirect:/progetto/formProgetto");
+			return("redirect:/progetto/visualizza");
 		}
-		return("redirect:/progetto/formProgetto");
-	}
-	@PostMapping ("/progetto/modifica")
-	public String modificaProgetto(long idProgetto,Progetto progetto) {
-		Progetto progettoOld = progettoService.getProgetto(idProgetto).get();
-		progettoOld.setCodice(progetto.getCodice());
-		progettoOld.setDescrizione(progetto.getDescrizione());
-		return("redirect:/progetto/formProgetto");
-	}
-	@PostMapping ("/progetto/cancella")
-	public String  cancellazioneProgetto(@RequestParam(name="idProgetto") long idProgetto) {
-		if (progettoService.getProgetto(idProgetto).isPresent()) progettoService.delete(idProgetto);
-		return("redirect:/progetto/formProgetto");
-	}
-	//Nuovi endpoint per nuova interfaccia
-	@GetMapping("/progetto/visualizzaById")
-	public String cercaProgetto(@RequestParam(name="id")long id, Model model) {
-		Progetto progetto=progettoService.getProgetto(id).get();
-		model.addAttribute("progetto", progetto);
-		return "visualizzaProgetti";
-	}
-	@GetMapping("/progetto/visualizzaInterfacce")
-	public String visualizzaIntrefacce(@RequestParam(name="id") long id,Model model) {
-		List<Interfaccia> interfaccia= new ArrayList<Interfaccia>();
-		Progetto progetto = progettoService.getProgetto(id).get();
-		if (progetto.getInterfaccia()!=null) {
-			interfaccia = new ArrayList<>(progetto.getInterfaccia());
-			logger.info("sono entrato");
-			interfaccia.forEach((u)->logger.info(u.getCodice()));
-			
+		else if (action.equals("Modifica")){
+			progetto= progettoService.getProgetto(form.getId()).orElse(null);
+			progetto.setDescrizione(form.getDescrizione());
+			progetto.setCodice(form.getCodice());		
+			progetto.setNome(form.getNome());
+			progettoService.save(progetto);
+			return("redirect:/progetto/visualizza?idSelected="+progetto.getId());
 		}
-		model.addAttribute("interfaccia",interfaccia);
-		return "visualizzaInterfacce";
+		else if (action.equals("Cancella")){
+			progettoService.delete(form.getId());
+			return("redirect:/progetto/visualizza");
+		}
+		else if (action.equals("Interfaccia")) {
+			return("redirect:/interfaccia/visualizza?idProgetto="+form.getId());
+		}
+		else return("redirect:/progetto/visualizza");
+	}
+
+		
+	
+	@GetMapping("/progetto/visualizza")
+	public String  projectView1(@RequestParam(required=false, name="idSelected") Long idSelected,Model model) {
+		ProgettoViewCRUDForm form= new ProgettoViewCRUDForm();
+		List<Progetto> progettoList = progettoService.findAll();
+		//valorizzo i valori di output con la lista dei progetti
+		progettoList.sort(Comparator.comparing(Progetto::getId));
+		if (idSelected!=null) {
+			Progetto progetto=progettoList.stream().filter(u->u.getId()==idSelected).findAny().orElse(null);
+			//nel caso il non esiste imposta l'ID di output uguale a null per creare una nuova funzionalita
+			if (progetto==null) {
+				form.setId(Long.valueOf(0));
+			}
+			else {
+				form.setId(progetto.getId());
+				form.setCodice(progetto.getCodice());
+				form.setDescrizione(progetto.getDescrizione());
+				form.setNome(progetto.getNome());
+				form.setId(progetto.getId());
+			}
+		}
+		else form.setId(Long.valueOf(0));
+		model.addAttribute("form",form);
+		model.addAttribute("progettoList",progettoList);
+		return "inserimentoProgetto";
 	}
 }

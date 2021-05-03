@@ -7,9 +7,9 @@ import com.intesigroup.testcasefactory.domain.Funzionalita;
 
 @Service
 public interface FunzionalitaService {
-	public void save(Funzionalita interfaccia);
+	public void save(Funzionalita funzionalita);
 	public List<Funzionalita> findAll();
 	public Optional<Funzionalita> getFunzionalita(long id);
-	public void deleteById(long idFunzionalita);
+	public void delete(long idFunzionalita);
 
 }
