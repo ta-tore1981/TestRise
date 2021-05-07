@@ -1,75 +1,116 @@
 <!doctype html>
 <html>
 
-<head>
-    <meta charset="utf-8">
-    <title>Test rise</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/custom.css}" rel="stylesheet" />
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-          <script src="../../assets/js/html5shiv.js"></script>
-          <script src="../../assets/js/respond.min.js"></script>
-        <![endif]-->
+		<head th:insert="general.html::headPart">
+   
+		</head>
 
-</head>
+	<body>
+		<header th:insert="general.html::headerPart"/>
 
-<body>
-    <div class="container">
-        <!-- 1 riga -->
-        <div class="row">
-            <div class="col-md-2 border">
-            <!-- <img src="../../templates/static/images/intesiIcon2.png" class="rounded float-left">-->
-                <img th:src="@{/images/intesiIcon2.png}" />  
+		<div class="container-fluid">
+        	<div class="row">
+        	<!--  Menu dei progetti -->
+            	<div class="menu-list-elements col-md-2">
+          	  		<div class="list-group">
+          	  			<div class="crea-button">
+            	        	<a class="list-group-item list-group-item-action active" th:text="@{Nuovo progetto}" th:href="@{/progetto/visualizza}"/>
+            	   		</div>
+      	             	<a th:each="element : ${progettoList}" th:class="${#strings.equals(form.id,element.id)} ? 'list-group-item list-group-item-action selected' : 'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/progetto/visualizza(idSelected=${element.id})}"/>
+     	    		</div>
+   		      	</div>
+   		      	<!--  Sezione inserimento progetto -->
+        	 	<div class="form-attr col-md-5">
+  		        	<h1>Gestione progetti</h1>
+ 	              	<h2 th:if= ${form.id} &le; 0>Modifica</h2>
+				   	<h2 th:unless= ${form.id} &le; 0>Inserisci</h2>
+					<form  th:action="@{/progetto/formProgetto}" th:object="${form}" method="post">   
+				 		<input type="hidden" th:field="*{id}" >
+				 			<div class="form-group">
+                        		<label for="progetto">Progetto</label>
+                       			<input type="text" class="form-control" id="progetto" th:field="*{nome}"
+								 placeholder="nome progetto" />
+                        		<small id="progetto-help" class="form-text text-muted">obbligatorio</small>
+                        	</div>
+                        	<div class="form-group">
+                        		<label for="codice">Codice</label>
+                       		 	<input type="text" class="form-control" id="codice" th:field="*{codice}"
+								 placeholder="codice" />
+                        		<small id="progetto-help" class="form-text text-muted">obbligatorio</small>
+                        </div>
+                        <div class="form-group">
+                        	<label for="codice">Descrizione</label>
+                       		 <input type="text" class="form-control" id="Descrizione" th:field="*{descrizione}"
+							  placeholder="descrizione" />
+                        	<small id="progetto-help" class="form-text text-muted">opzionale</small>
+                        </div>
+                        <p>
+							<button class="btn btn-primary" type="submit" name="action" value="Inserisci" > Inserisci </button>
+							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Modifica">Modifica</button>
+							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Cancella">Cancella</button>
+							<button class="btn btn-primary" type="reset" value="Reset">Reset </button>
+							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Interfaccia">Interfacce -></button>
+						</p>
+					</form>
+        		</div>
+        	<!--  Sezione inserimento attore -->
+        		<div class="col-md-5">
+                	<form class="form-row" th:action="@{/attore/formAttore}" th:object="${attoreForm}" method="post" >
+                		<input type="hidden" th:field="*{id}">
+                		<input type="hidden" th:field="*{idProgetto}">
+                    	<div class="col-md-4">
+                        	<label for="nome-attore">Attore</label>
+                        	<input type="text" class="form-control mb-2 mr-sm-2" id="nome-attore" th:field="*{nome}" 
+                            placeholder="">
+                     	</div>
+                   		 <div class="col-md-4">
+                        	<label for="codice-attore">Codice attore</label>
+                        	<input type="text" class="form-control mb-2 mr-sm-2" id="codice-attore" th:field="*{codice}" 
+                            placeholder="">
+                    	</div>
+                    	<div class="col-md-4">
+                        	<label for="descrizione-attore">Descrizione</label>
+                       		<input type="text" class="form-control mb-2 mr-sm-2" id="descrizione-attore" th:field="*{descrizione}" 
+                            placeholder="">
+                    	</div>
+                    	<div class="col-md-2">
+                            <button class="btn btn-primary" type="submit" name="action"
+                                value="Inserisci">Inserisci</button>
+                    	</div>
+                    	<div class="col-md-2">
+                            <button class="btn btn-primary" type="submit"  name="action"
+                                value="Modifica">Modifica</button>
+                    	</div>
+                    	<div class="col-md-2">
+                        	<button class="btn btn-primary" type="submit" name="action"
+                            value="Cancella">Cancella</button>
+                    	</div>  	
+                	</form>
+                	<!--  Creazione tabella attori -->
+                    <div class="tabella-attori col-md-12">
+                    	<table class="table table-striped">
+                    		<thead>
+                        		<tr>
+                            		<th scope="col">Nome</th>
+                            		<th scope="col">Codice</th>
+                            		<th scope="col">Descrizione</th>
+                            		<th scope="col">Seleziona</th>
+                        		</tr>
+                    		</thead>
+                    		<tbody>
+                        		<tr th:each="element: ${attoreList}">
+                            		<td th:text="${element.nome}"></td>
+                            		<td th:text="${element.codice}"></td>
+                            		<td th:text="${element.descrizione}"></td>
+                            		<td>
+                            			<a th:class="${element.id==attoreForm.id ? 'btn btn-primary selected' : 'btn btn-primary'}" th:href="@{/progetto/visualizza(idSelected=${form.id},attoreSelected=${element.id})}" role="button">Seleziona</a>
+                            		</td>
+                            	</tr>
+                            </tbody>
+                	</table>
+                </div>
             </div>
-            <div class="col-md-10 border">
-                <h1  th:text="@{Test Rise}" class="font-weight-bold">
-                    
-                </h1>
-                <h4 th:text="@{Test Factory Intesy Group}">
-                    
-                </h4>
-            </div>
-        </div>
-        <div class="row">
-        	<div class="list-group col-md-2">
-  					<!--   <button type="button" th:each="progetto : ${listaProgetto}" class="list-group-item list-group-item-action" th:text="${progetto.nome}" th:href="@{//projectNew/view(idProgetto=${progetto.id})}"> --> 
-                    <a class="list-group-item list-group-item-action active" th:text="@{Nuovo progetto}" th:href="@{/progetto/visualizza}"/>
-                    <a th:each="element : ${progettoList}" th:class="${#strings.equals(form.id,element.id)} ? 'list-group-item list-group-item-action selected' : 'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/progetto/visualizza(idSelected=${element.id})}"/>
-            </div>
-             <div class="col-md-10 border">
-             		<h1>Gestione progetti</h1>
-					<h2 th:if= ${form.id} &le; 0>Modifica</h2>
-					<h2 th:unless= ${form.id} &le; 0>Inserisci</h2>
-					<form action="#" th:action="@{/progetto/formProgetto}" th:object="${form}" method="post">   
-						<input type="hidden" th:field="*{id}" >
-						
-					
-					<p>
-					  	Nome: 
-						<input type="text" th:field="*{nome}"/>
-					  	
-					<p>
-					 	Codice: <input type="text" th:field="*{codice}">
-					</p>
-					
-					<p>
-						Descrizione: <input type="text" th:field="*{descrizione}">
-					</p>
-					<p>
-						<button type="submit" name="action" value="Inserisci" > Inserisci </button>
-						<button th:if=(*{id}!=0) type="submit" name="action" value="Modifica">Modifica</button>
-						<button th:if=(*{id}!=0) type="submit" name="action" value="Cancella">Cancella</button>
-						<button th:if=(*{id}!=0) type="submit" name="action" th:value="Interfaccia">Interfacce</button>
-						<button type="reset" value="Reset">Reset </button>
-						
-					</p>
-				</form>
-        </div>
-         </div>
-     </div> 
+      	</div>
+   	 </div> 
 </body>
-
 </html>

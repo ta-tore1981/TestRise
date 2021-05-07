@@ -1,76 +1,56 @@
 <!doctype html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <title>Test rise</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/css/custom.css}" rel="stylesheet" />
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-          <script src="../../assets/js/html5shiv.js"></script>
-          <script src="../../assets/js/respond.min.js"></script>
-        <![endif]-->
-
-</head>
-
+  <head th:insert="general.html::headPart"/>
 <body>
-    <div class="container">
-        <!-- 1 riga -->
-        <div class="row">
-            <div class="col-md-2 border">
-            <!-- <img src="../../templates/static/images/intesiIcon2.png" class="rounded float-left">-->
-                <img th:src="@{/images/intesiIcon2.png}" />  
-            </div>
-            <div class="col-md-10 border">
-                <h1  th:text="@{Test Rise}" class="font-weight-bold">
-                    
-                </h1>
-                <h4 th:text="@{Test Factory Intesy Group}">
-                    
-                </h4>
-            </div>
-        </div>
-        <div class="row">
-        	<div class="list-group col-md-2">
-  					<!--   <button type="button" th:each="progetto : ${listaProgetto}" class="list-group-item list-group-item-action" th:text="${progetto.nome}" th:href="@{//projectNew/view(idFunzionalita=${progetto.id})}"> --> 
-                    <a class="list-group-item list-group-item-action active" th:text="@{Nuova Funzionalita}" th:href="@{/funzionalita/visualizza(idInterfaccia=${form.idInterfaccia})}"/>
-                    <a th:each="element : ${funzionalitaList}" th:class="${#strings.equals(element.id,form.id)} ? 'list-group-item list-group-item-action selected' :'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/funzionalita/visualizza(idInterfaccia=${element.interfaccia.id},idSelected=${element.id})}"/>
-            </div>
-             <div class="col-md-10 border">
-            		<h1>Gestione funzionalita</h1>
-					<h2 th:if= ${form.id} &le; 0>Modifica</h2>
-					<h2 th:unless= ${form.id} &le; 0>Inserisci</h2>
+   <header th:insert="general.html::headerPart"/>
+   
+   <div class="container-fluid">
+        	<div class="row">
+            	<div class="menu-list-elements col-md-2">
+          	  		<div class="list-group">
+          	  			<div class="crea-button">
+            	        	<a class="list-group-item list-group-item-action active" th:text="@{Nuova interfaccia}" th:href="@{/funzionalita/visualizza(idInterfaccia=${form.idInterfaccia})}"/>
+            	   		</div>
+      	             		 <a th:each="element : ${funzionalitaList}" th:class="${#strings.equals(element.id,form.id)} ? 'list-group-item list-group-item-action selected' :'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/funzionalita/visualizza(idInterfaccia=${element.interfaccia.id},idSelected=${element.id})}"/>
+     	    		</div>
+   		      	</div>
+   		      	<div class="form-attr col-md-5">
+  		        	<h1>Gestione funzionalita</h1>
+ 	              	<h2 th:if= ${form.id} &le; 0>Modifica</h2>
+				   	<h2 th:unless= ${form.id} &le; 0>Inserisci</h2>
 					<form action="#" th:action="@{/funzionalita/formFunzionalita}" th:object="${form}" method="post">   
-						<input type="hidden" th:field="*{id}" >
-						<input type="hidden" th:field="*{idInterfaccia}" >
-					
-					<p>
-					  	Nome: 
-						<input type="text" th:field="*{nome}"/>
-					  	
-					<p>
-					 	Codice: <input type="text" th:field="*{codice}">
-					</p>
-					
-					<p>
-						Descrizione: <input type="text" th:field="*{descrizione}">
-					</p>
-					<p>
-						<button type="submit" name="action" value="Inserisci" > Inserisci </button>
-						<button th:if=(*{id}!=0) type="submit" name="action" value="Modifica">Modifica</button>
-						<button th:if=(*{id}!=0) type="submit" name="action" value="Cancella">Cancella</button>
-						<button th:if=(*{id}!=0) type="submit" name="action" th:value="Focus">Focus</button>
-						<button type="submit" name="action" th:value="Interfaccia">Interfacce</button>
-						<button type="reset" value="Reset">Reset </button>
-						
-					</p>
-				</form>
-        </div>
-         </div>
-     </div> 
+				 		<input type="hidden" th:field="*{id}" >
+				 		<input type="hidden" th:field="*{idInterfaccia}">
+				 			<div class="form-group">
+                        		<label for="interfaccia">Interfaccia</label>
+                       			<input type="text" class="form-control" id="interfaccia" th:field="*{nome}"
+								 placeholder="nome interfaccia" />
+                        		<small id="interfaccia-help" class="form-text text-muted">obbligatorio</small>
+                        	</div>
+                        	<div class="form-group">
+                        		<label for="codice">Codice</label>
+                       		 	<input type="text" class="form-control" id="codice" th:field="*{codice}"
+								 placeholder="codice" />
+                        		<small id="interfaccia-help" class="form-text text-muted">obbligatorio</small>
+                        </div>
+                        <div class="form-group">
+                        	<label for="codice">Descrizione</label>
+                       		 <input type="text" class="form-control" id="Descrizione" th:field="*{descrizione}"
+							  placeholder="descrizione" />
+                        	<small id="interfaccia-help" class="form-text text-muted">opzionale</small>
+                        </div>
+                        <p>
+                        	<button class="btn btn-primary" type="submit" name="action" th:value="Interfaccia">Interfacce</button>
+							<button class="btn btn-primary" type="submit" name="action" value="Inserisci" > Inserisci </button>
+							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Modifica">Modifica</button>
+							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Cancella">Cancella</button>
+							<button class="btn btn-primary" type="reset" value="Reset">Reset </button>
+							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" th:value="Focus">Focus</button>
+						</p>
+					</form>
+        		</div>
+        	</div> 
+      </div>
 </body>
 
 </html>

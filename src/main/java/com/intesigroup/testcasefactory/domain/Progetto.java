@@ -19,7 +19,6 @@ import javax.persistence.Table;
 @Table(name="progetto")
 public class Progetto implements Serializable{
 	private static final long serialVersionUID = 5235070022808386732L;
-	
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +39,12 @@ public class Progetto implements Serializable{
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="progetto", orphanRemoval=true)
 	private Set<Interfaccia> Interfaccia=new HashSet<>();
 	
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="progetto", orphanRemoval=true)
+	private Set<Attore> Attore=new HashSet<>();
+	
 	public long getId() {
 		return id;
 	}
-	
-
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -79,5 +79,11 @@ public class Progetto implements Serializable{
 
 	public void setInterfaccia(Set<Interfaccia> interfaccia) {
 		Interfaccia = interfaccia;
+	}
+	public Set<Attore> getAttore() {
+		return Attore;
+	}
+	public void setAttore(Set<Attore> attore) {
+		Attore = attore;
 	}
 }

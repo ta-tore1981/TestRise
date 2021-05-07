@@ -1,11 +1,31 @@
-@charset "UTF-8";
-
-.list-group {
-    max-height: 100%;
-    margin-bottom: 10px;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
+.menu-list-elements {
+    padding: 0px;
+    margin: 0px;
+    position:relative;
+    height: 550px;
+    overflow-y:scroll;
 }
-.list-group-item.list-group-item-action.selected{
-    background-color:red;
+.crea-button{
+    position: inherit;
+}
+.container-fluid{
+    width: 90%;
+}
+.selected {
+	background-color: orange;
+	color:black;
+
+
+}
+.selected:hover{
+    background-color: orange;
+    color: gray;
+}
+.tabella-attori{
+	margin-top:20px;
+	margin-left:0px;
+	padding-left:0px;
+	padding-right:0px;
+	height: 430px;
+	overflow-y:scroll;
 }

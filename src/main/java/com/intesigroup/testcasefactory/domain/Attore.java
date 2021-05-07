@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,9 +27,8 @@ public class Attore implements Serializable {
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
 	@Basic(optional=false)
-	private String utente;
+	private String nome;
 	
 	@Basic(optional=true)
 	private String caratteristiche_personali;
@@ -47,8 +48,13 @@ public class Attore implements Serializable {
 	@Basic(optional=false)
 	private String descrizione;
 	
+	
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="attore", orphanRemoval=true)
 	private Set<InterfacciaAttore> interfacciaAttore=new HashSet<>();
+	
+	@ManyToOne()
+	@JoinColumn(name="id_progetto", referencedColumnName="id")
+	private Progetto progetto= new Progetto();
 
 	public long getId() {
 		return id;
@@ -58,12 +64,20 @@ public class Attore implements Serializable {
 		this.id = id;
 	}
 
-	public String getUtente() {
-		return utente;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setUtente(String utente) {
-		this.utente = utente;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Progetto getProgetto() {
+		return progetto;
+	}
+
+	public void setProgetto(Progetto progetto) {
+		this.progetto = progetto;
 	}
 
 	public String getCaratteristiche_personali() {
