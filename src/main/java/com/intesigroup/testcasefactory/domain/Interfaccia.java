@@ -45,8 +45,6 @@ public class Interfaccia implements Serializable{
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="interfaccia", orphanRemoval=true)
 	private Set<Funzionalita> funzionalita=new HashSet<>();
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="attore", orphanRemoval=true)
-	private Set<InterfacciaAttore> attore=new HashSet<>();
 	
 
 	public long getId() {
@@ -91,14 +89,6 @@ public class Interfaccia implements Serializable{
 
 	public void setFunzionalita(Set<Funzionalita> funzionalita) {
 		this.funzionalita = funzionalita;
-	}
-
-	public Set<InterfacciaAttore> getAttore() {
-		return attore;
-	}
-
-	public void setAttore(Set<InterfacciaAttore> attore) {
-		this.attore = attore;
 	}
 
 	public void setProgetto(Progetto progetto) {
