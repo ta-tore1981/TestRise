@@ -51,9 +51,6 @@ public class Attore implements Serializable {
 	private String descrizione;
 	
 	
-	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="attore", orphanRemoval=true)
-	private Set<InterfacciaAttore> interfacciaAttore=new HashSet<>();
-	
 	@ManyToOne()
 	@JoinColumn(name="id_progetto", referencedColumnName="id")
 	private Progetto progetto= new Progetto();
@@ -135,14 +132,6 @@ public class Attore implements Serializable {
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
-	}
-
-	public Set<InterfacciaAttore> getInterfacciaAttore() {
-		return interfacciaAttore;
-	}
-
-	public void setInterfacciaAttore(Set<InterfacciaAttore> interfacciaAttore) {
-		this.interfacciaAttore = interfacciaAttore;
 	}
 
 	public static long getSerialversionuid() {

@@ -70,7 +70,6 @@ public class ProgettoController {
 			attore.setCodice(form.getCodice());		
 			attore.setNome(form.getNome());
 			attore.setProgetto(progettoService.getProgetto(form.getIdProgetto()).get());
-			attore.setInterfacciaAttore(null);
 			attoreService.save(attore);
 			return("redirect:/progetto/visualizza?idSelected="+form.getIdProgetto());
 		}
