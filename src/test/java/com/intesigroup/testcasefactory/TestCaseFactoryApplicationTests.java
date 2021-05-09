@@ -20,6 +20,7 @@ import com.intesigroup.testcasefactory.domain.Interfaccia;
 import com.intesigroup.testcasefactory.domain.Progetto;
 import com.intesigroup.testcasefactory.service.AttoreService;
 import com.intesigroup.testcasefactory.service.FunzionalitaService;
+import com.intesigroup.testcasefactory.service.InterfacciaFunzionalitaService;
 import com.intesigroup.testcasefactory.service.InterfacciaService;
 import com.intesigroup.testcasefactory.service.ProgettoService;
 
@@ -42,6 +43,10 @@ class TestCaseFactoryApplicationTests {
 	FunzionalitaService funzionalitaService;
 	@Autowired
 	AttoreService attoreService;
+	
+	@Autowired 
+	InterfacciaFunzionalitaService interfacciaFunzionalitaService;
+	
 	
 
 /*	@Test
@@ -117,5 +122,11 @@ class TestCaseFactoryApplicationTests {
 			}
 			
 		}
+	}
+	@Test
+	void addFunzioneUtente() throws Exception {
+		Attore attore= attoreService.getAttore(24).get();
+		interfacciaFunzionalitaService.ge
+		
 	}
 }

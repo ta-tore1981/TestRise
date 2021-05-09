@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -35,6 +36,9 @@ public class Funzionalita {
 	
 	@Basic(optional=true)
 	private String descrizione;
+	
+	@ManyToMany(mappedBy = "funzionalita")
+	Set<Attore> attore;
 	
 	@ManyToOne()
 	@JoinColumn(name="id_interfaccia", referencedColumnName="id")

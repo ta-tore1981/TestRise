@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -55,6 +57,13 @@ public class Attore implements Serializable {
 	@ManyToOne()
 	@JoinColumn(name="id_progetto", referencedColumnName="id")
 	private Progetto progetto= new Progetto();
+	
+	@ManyToMany
+	@JoinTable(
+			name="attore_funzionalita",
+			joinColumns = @JoinColumn(name = "id_attore"), 
+            inverseJoinColumns = @JoinColumn(name = "id_funzione"))
+	Set<Funzionalita> funzionalita;
 
 	public long getId() {
 		return id;
@@ -138,6 +147,14 @@ public class Attore implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Set<Funzionalita> getFunzionalita() {
+		return funzionalita;
+	}
+
+	public void setFunzionalita(Set<Funzionalita> funzionalita) {
+		this.funzionalita = funzionalita;
 	}
 	
 
