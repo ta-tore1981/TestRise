@@ -29,5 +29,8 @@ public class AttoreServiceImpl implements AttoreService{
 	public Optional<Attore>getAttore(long id) {
 		return attoreRepository.findById(id);
 	}
+	public List<Attore> findByProgettoId(long id) {
+		return attoreRepository.findByProgettoId(id);
+	}
 	
 }

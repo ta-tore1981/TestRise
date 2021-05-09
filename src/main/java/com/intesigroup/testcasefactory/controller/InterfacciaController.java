@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.intesigroup.testcasefactory.domain.Attore;
 import com.intesigroup.testcasefactory.domain.Interfaccia;
 import com.intesigroup.testcasefactory.domain.Progetto;
+import com.intesigroup.testcasefactory.entityView.AttoreViewCRUDForm;
 import com.intesigroup.testcasefactory.entityView.InterfacciaViewCRUDForm;
+import com.intesigroup.testcasefactory.service.AttoreService;
 import com.intesigroup.testcasefactory.service.InterfacciaService;
 import com.intesigroup.testcasefactory.service.ProgettoService;
 
@@ -25,6 +29,8 @@ public class InterfacciaController {
 	InterfacciaService interfacciaService;
 	@Autowired
 	ProgettoService progettoService;
+	@Autowired
+	AttoreService attoreService;
 	
 	Logger logger = LoggerFactory.getLogger(InterfacciaController.class);
 	
@@ -67,8 +73,14 @@ public class InterfacciaController {
 		InterfacciaViewCRUDForm form= new InterfacciaViewCRUDForm();
 		Interfaccia interfaccia;
 		List<Interfaccia> interfacciaList;
+		List<Attore> attoreList= new ArrayList<Attore>();
+		AttoreViewCRUDForm attoreForm = new AttoreViewCRUDForm();
 		Progetto progetto = progettoService.getProgetto(idProgetto).orElse(null);
 		if (progetto!=null) {
+			interfacciaList = new ArrayList<Interfaccia>(progetto.getInterfaccia());
+			interfacciaList.sort(Comparator.comparing(Interfaccia::getId));
+			attoreList= attoreService.findByProgettoId(idProgetto);
+			attoreList.sort(Comparator.comparing(Attore::getId));
 			interfacciaList = new ArrayList<Interfaccia>(progetto.getInterfaccia());
 			interfacciaList.sort(Comparator.comparing(Interfaccia::getId));
 			//valorizzo i valori di output con la lista delle interfacce
@@ -96,6 +108,9 @@ public class InterfacciaController {
 		else return "redirect:/erroPage?errorStr=l'interfaccia selezionata non ha associato alcun progetto";
 		model.addAttribute("form",form);
 		model.addAttribute("interfacciaList",interfacciaList);
+		model.addAttribute("attoreList",attoreList);
+		model.addAttribute("attoreForm",attoreForm);
 		return "inserimentoInterfaccia";
+		
 	}
 }

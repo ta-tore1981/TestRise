@@ -1,5 +1,7 @@
 package com.intesigroup.testcasefactory.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,4 +13,5 @@ public interface AttoreRepository extends JpaRepository<Attore,Long>{
 	@Modifying
 	@Query("DELETE FROM Attore i WHERE i.id=?1")
 	public void deleteById(long id);
+	public List<Attore> findByProgettoId(long id);
 }

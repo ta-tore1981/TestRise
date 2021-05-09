@@ -13,5 +13,6 @@ public interface AttoreService {
 	public void save(Attore attore);
 	public void deleteById(long id);
 	public Optional<Attore> getAttore(long id);
+	public List<Attore> findByProgettoId(long id);
 	
 }
