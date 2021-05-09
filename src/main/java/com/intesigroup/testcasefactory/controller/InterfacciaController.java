@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intesigroup.testcasefactory.domain.Attore;
+import com.intesigroup.testcasefactory.domain.Funzionalita;
 import com.intesigroup.testcasefactory.domain.Interfaccia;
 import com.intesigroup.testcasefactory.domain.Progetto;
 import com.intesigroup.testcasefactory.entityView.AttoreViewCRUDForm;
@@ -67,7 +69,32 @@ public class InterfacciaController {
 		}
 		return("redirect:interfaccia/visualizza?idProgetto="+form.getIdProgetto());
 	}
-	
+	@PostMapping("/interfaccia/abilitazioneUtente")
+	public String abilitazioneUtente(@ModelAttribute AttoreViewCRUDForm form, Long idInterfaccia,String action, RedirectAttributes redirAttrs) {
+        Attore attore=attoreService.getAttore(form.getId()).orElse(null);
+		Interfaccia interfaccia = interfacciaService.getInterfaccia(idInterfaccia).orElse(null);
+		if (interfaccia==null) {
+			redirAttrs.addFlashAttribute("error","selezionare almeno un'interfaccia");
+			return("redirect:/interfaccia/visualizza?idProgetto="+attore.getProgetto().getId());
+		}
+		if (action.equals("Abilita")){
+			for (Funzionalita funzionalita : interfaccia.getFunzionalita()) {
+				attore.getFunzionalita().add(funzionalita);
+				attoreService.save(attore);
+				redirAttrs.addFlashAttribute("success","l'abilitazione  è riuscita correttamente");
+			}
+		}
+		if (action.equals("Disabilita")){
+			for (Funzionalita funzionalita : interfaccia.getFunzionalita()) {
+				attore.getFunzionalita().remove(funzionalita);
+				attoreService.save(attore);
+				redirAttrs.addFlashAttribute("success","la disabilitazione è riuscita correttamente");
+			}
+		}
+		
+		redirAttrs.addFlashAttribute("success","l'abilitazione  è riuscita correttamente");
+		return("redirect:/interfaccia/visualizza?idProgetto="+attore.getProgetto().getId()+"&idSelected="+idInterfaccia);
+	}
 	@GetMapping("/interfaccia/visualizza")
 	public String  projectView1(@RequestParam(required=false, name="idSelected") Long idSelected, @RequestParam(required=true, name="idProgetto") Long idProgetto, Model model) {
 		InterfacciaViewCRUDForm form= new InterfacciaViewCRUDForm();

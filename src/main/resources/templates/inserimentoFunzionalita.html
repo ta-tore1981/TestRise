@@ -9,11 +9,12 @@
             	<div class="menu-list-elements col-md-2">
           	  		<div class="list-group">
           	  			<div class="crea-button">
-            	        	<a class="list-group-item list-group-item-action active" th:text="@{Nuova interfaccia}" th:href="@{/funzionalita/visualizza(idInterfaccia=${form.idInterfaccia})}"/>
+            	        	<a class="list-group-item list-group-item-action active" th:text="@{Nuova funzionalita}" th:href="@{/funzionalita/visualizza(idInterfaccia=${form.idInterfaccia})}"/>
             	   		</div>
       	             		 <a th:each="element : ${funzionalitaList}" th:class="${#strings.equals(element.id,form.id)} ? 'list-group-item list-group-item-action selected' :'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/funzionalita/visualizza(idInterfaccia=${element.interfaccia.id},idSelected=${element.id})}"/>
      	    		</div>
    		      	</div>
+ 
    		      	<div class="form-attr col-md-5">
   		        	<h1>Gestione funzionalita</h1>
  	              	<h2 th:if= ${form.id} &le; 0>Modifica</h2>
@@ -50,7 +51,7 @@
 					</form>
         		</div>
         	</div> 
-      </div>
+      </div> 
 </body>
 
 </html>

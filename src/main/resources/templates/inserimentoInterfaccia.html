@@ -3,7 +3,8 @@
 	<head th:insert="general.html::headPart"/>
 <body>
 		<header th:insert="general.html::headerPart"/>
-		
+		<div  class="alert alert-success text-center" role="alert" text="${success}" th:if="${success}" th:text="${success}"/>
+			<div  class="alert alert-danger text-center" role="alert" text="${error}" th:if="${error}" th:text="${error}"/>
 		<div class="container-fluid">
         	<div class="row">
             	<div class="menu-list-elements col-md-2">
@@ -49,7 +50,7 @@
 						</p>
 					</form>
         		</div>
-        		        		<div class="col-md-5">
+        		<div class="col-md-5">
         			<h2> Accessibilita interfacce</h2>
         				<div class="tabella-attori col-md-12">
                     		<table class="table table-striped">
@@ -63,7 +64,7 @@
                     			<tbody>
                         			<tr th:each="element: ${attoreList}">
                         				<form th:action="@{/interfaccia/abilitazioneUtente}" th:object="${attoreForm}" method="post" >
-                        					<input  id ="idInterfaccia" th:name="idInterfaccia" th:value="${form.id}" type="hidden" path="idInterfaccia" >
+                        					<input  id ="idInterfaccia" th:name="idInterfaccia" th:value="${form.id}" type="hidden">
                         					<input  id ="id" th:name="id" th:value="${element.id}" type="hidden" path="id" >
                         					<td>
                         						<input  type=text class ="listAttrAttori" readonly="readonly" th:name="nome"  th:value="${element.nome}" path="nome"/>
