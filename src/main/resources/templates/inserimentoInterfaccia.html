@@ -49,41 +49,37 @@
 						</p>
 					</form>
         		</div>
-        		<div class="form-attr col-md-5">
-  		        	<h1>Gestione Interfacce</h1>
- 	              	<h2 th:if= ${form.id} &le; 0>Modifica</h2>
-				   	<h2 th:unless= ${form.id} &le; 0>Inserisci</h2>
-					<form action="#" th:action="@{/interfaccia/formInterfaccia}" th:object="${form}" method="post">   
-				 		<input type="hidden" th:field="*{id}" >
-				 		<input type="hidden" th:field="*{idProgetto}">
-				 			<div class="form-group">
-                        		<label for="interfaccia">Interfaccia</label>
-                       			<input type="text" class="form-control" id="interfaccia" th:field="*{nome}"
-								 placeholder="nome interfaccia" />
-                        		<small id="interfaccia-help" class="form-text text-muted">obbligatorio</small>
-                        	</div>
-                        	<div class="form-group">
-                        		<label for="codice">Codice</label>
-                       		 	<input type="text" class="form-control" id="codice" th:field="*{codice}"
-								 placeholder="codice" />
-                        		<small id="interfaccia-help" class="form-text text-muted">obbligatorio</small>
-                        </div>
-                        <div class="form-group">
-                        	<label for="codice">Descrizione</label>
-                       		 <input type="text" class="form-control" id="Descrizione" th:field="*{descrizione}"
-							  placeholder="descrizione" />
-                        	<small id="interfaccia-help" class="form-text text-muted">opzionale</small>
-                        </div>
-                        <p>
-                        	<button class="btn btn-primary" type="submit" name="action" th:value="Progetto">Progetto</button>
-							<button class="btn btn-primary" type="submit" name="action" value="Inserisci" > Inserisci </button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Modifica">Modifica</button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Cancella">Cancella</button>
-							<button class="btn btn-primary" type="reset" value="Reset">Reset </button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" th:value="Funzionalita">funzionalita</button>
-						</p>
-					</form>
-        		</div>
+        		        		<div class="col-md-5">
+        			<h2> Accessibilita interfacce</h2>
+        				<div class="tabella-attori col-md-12">
+                    		<table class="table table-striped">
+                    			<thead>
+                        			<tr>
+                            			<th scope="col">Nome</th>
+                            			<th scope="col">Abilita</th>
+                            			<th scope="coll">Disabiita</th>
+                        			</tr>
+                    			</thead>
+                    			<tbody>
+                        			<tr th:each="element: ${attoreList}">
+                        				<form th:action="@{/interfaccia/abilitazioneUtente}" th:object="${attoreForm}" method="post" >
+                        					<input  id ="idInterfaccia" th:name="idInterfaccia" th:value="${form.id}" type="hidden" path="idInterfaccia" >
+                        					<input  id ="id" th:name="id" th:value="${element.id}" type="hidden" path="id" >
+                        					<td>
+                        						<input  type=text class ="listAttrAttori" readonly="readonly" th:name="nome"  th:value="${element.nome}" path="nome"/>
+                            				</td>
+                            			    <td>
+                            					<button class="btn btn-primary" type="submit" name="action" value="Abilita">Abilita</button>
+                            				</td>
+                            				<td>
+                            					<button class="btn btn-primary" type="submit" name="action" value="Disabilita">Disabilita</button>
+                            				</td>
+                        				</form>
+                            		</tr>
+                            	</tbody>
+                			</table>
+                		</div>
+        			</div>
       		</div>
     	</div> 
 	</body>
