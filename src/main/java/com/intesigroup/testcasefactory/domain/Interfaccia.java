@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="interfaccia")
@@ -26,10 +28,12 @@ public class Interfaccia implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@NotBlank
 	@Column(name="nome")
 	@Basic(optional=false)
 	private String nome;
 	
+	@NotBlank
 	@Column(name="codice")
 	@Basic(optional=false)
 	private String codice;

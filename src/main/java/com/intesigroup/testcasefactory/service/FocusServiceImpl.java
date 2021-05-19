@@ -37,5 +37,8 @@ public class FocusServiceImpl implements FocusService{
 	public void deleteById(long id) {
 		focusRepository.deleteById(id);
 	}
+	public List<Focus> findByFunzionalitaId(long id){
+		return focusRepository.findByFunzionalitaId(id);
+	}
 	
 }

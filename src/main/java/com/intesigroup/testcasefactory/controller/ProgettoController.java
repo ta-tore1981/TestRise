@@ -9,15 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intesigroup.testcasefactory.domain.Attore;
 import com.intesigroup.testcasefactory.domain.Progetto;
 import com.intesigroup.testcasefactory.entityView.AttoreViewCRUDForm;
+import com.intesigroup.testcasefactory.entityView.InterfacciaViewCRUDForm;
 import com.intesigroup.testcasefactory.entityView.ProgettoViewCRUDForm;
 import com.intesigroup.testcasefactory.service.AttoreService;
 import com.intesigroup.testcasefactory.service.ProgettoService;
@@ -33,60 +36,104 @@ public class ProgettoController {
 	Logger logger = LoggerFactory.getLogger(ProgettoController.class);
 	
 	@PostMapping("/progetto/formProgetto")
-	public String insProgetti(@ModelAttribute ProgettoViewCRUDForm form,String action, Model model) {
+	public String insProgetti(@ModelAttribute ProgettoViewCRUDForm form,String action,RedirectAttributes redirAttrs,  Model model) {
 		Progetto progetto= new Progetto();
 		if (action.equals("Inserisci")){
-			progetto.setId(0);
-			progetto.setDescrizione(form.getDescrizione());
-			progetto.setCodice(form.getCodice());		
-			progetto.setNome(form.getNome());
-			progettoService.save(progetto);
-			return("redirect:/progetto/visualizza");
+			//verifica dei dati per la creazione del progetto
+			// creazione progetto
+			this.validationFormProgetto(redirAttrs, form);
+			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
+				progetto.setId(0);
+				progetto.setDescrizione(form.getDescrizione().trim());
+				progetto.setCodice(form.getCodice().trim());		
+				progetto.setNome(form.getNome().trim());
+				progettoService.save(progetto);		
+				return("redirect:/progetto/visualizza");	
+			}
 		}
-		else if (action.equals("Modifica")){
-			progetto= progettoService.getProgetto(form.getId()).orElse(null);
-			progetto.setDescrizione(form.getDescrizione());
-			progetto.setCodice(form.getCodice());		
-			progetto.setNome(form.getNome());
-			progettoService.save(progetto);
-			return("redirect:/progetto/visualizza?idSelected="+progetto.getId());
+		if (action.equals("Modifica")){
+			if (!redirAttrs.getFlashAttributes().containsKey("nomeIProgettoVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceProgettoVuoto")) {
+				redirAttrs.getFlashAttributes().remove("nomeCodiceProgettoDuplicato");
+				progetto= progettoService.getProgetto(form.getId()).orElse(null);
+				progetto.setDescrizione(form.getDescrizione());
+				progetto.setCodice(form.getCodice());		
+				progetto.setNome(form.getNome());
+				progettoService.save(progetto);
+				return("redirect:/progetto/visualizza?idSelected="+progetto.getId());
+			}
 		}
-		else if (action.equals("Cancella")){
+		if (action.equals("Cancella")){
 			progettoService.delete(form.getId());
 			return("redirect:/progetto/visualizza");
 		}
-		else if (action.equals("Interfaccia")) {
+		if (action.equals("Interfaccia")) {
 			return("redirect:/interfaccia/visualizza?idProgetto="+form.getId());
 		}
-		else return("redirect:/progetto/visualizza");
+		return("redirect:/progetto/visualizza");
+	}
+	
+	private void  validationFormProgetto(RedirectAttributes redirAttrs, ProgettoViewCRUDForm form) {
+		if (form.getNome().trim().equals("")) {
+			redirAttrs.addFlashAttribute("nomeProgettoVuoto", "nomeProgettoVuoto");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+		if (progettoService.findAll().stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
+			redirAttrs.addFlashAttribute("nomeCodiceProgettoDuplicato", "nomeCodiceProgettoDuplicato");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+		if (form.getCodice().trim().equals("")) {
+			redirAttrs.addFlashAttribute("codiceProgettoVuoto", "codiceProgettoVuoto");
+			redirAttrs.addFlashAttribute("error","true");
+		}
 	}
 
 	@PostMapping("/attore/formAttore")
-	public String formAttore(@ModelAttribute AttoreViewCRUDForm form, String action ) {
+	public String formAttore(@ModelAttribute AttoreViewCRUDForm form, String action, RedirectAttributes redirAttrs ) {
 		Attore attore = new Attore();
 		if (action.equals("Inserisci")) {
-			attore.setId(0);
-			attore.setDescrizione(form.getDescrizione());
-			attore.setCodice(form.getCodice());		
-			attore.setNome(form.getNome());
-			attore.setProgetto(progettoService.getProgetto(form.getIdProgetto()).get());
-			attoreService.save(attore);
+			this.validationFormAttore(redirAttrs, form);
+			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
+				attore.setId(0);
+				attore.setDescrizione(form.getDescrizione());
+				attore.setCodice(form.getCodice());		
+				attore.setNome(form.getNome());
+				attore.setProgetto(progettoService.getProgetto(form.getIdProgetto()).get());
+				attoreService.save(attore);
+			}
 			return("redirect:/progetto/visualizza?idSelected="+form.getIdProgetto());
 		}
 		else if (action.equals("Modifica")){
-			attore = attoreService.getAttore(form.getId()).orElse(null);
-			attore.setDescrizione(form.getDescrizione());
-			attore.setCodice(form.getCodice());		
-			attore.setNome(form.getNome());
-			attoreService.save(attore);
-			return("redirect:/progetto/visualizza?idSelected="+form.getIdProgetto()+"&attoreSelected="+attore.getId());		}
-		
+			if (!redirAttrs.getFlashAttributes().containsKey("nomeAttoreVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceAttoreVuoto")) {
+				redirAttrs.getFlashAttributes().remove("nomeAttoreFocusDuplicato");
+				attore = attoreService.getAttore(form.getId()).orElse(null);
+				attore.setDescrizione(form.getDescrizione());
+				attore.setCodice(form.getCodice());		
+				attore.setNome(form.getNome());
+		        attoreService.save(attore);
+			}
+			return("redirect:/progetto/visualizza?idSelected="+form.getIdProgetto()+"&attoreSelected="+attore.getId());		
+		}
 		else if (action.equals("Cancella")){
 			attoreService.deleteById(form.getId());
 			return("redirect:/progetto/visualizza?idSelected="+form.getIdProgetto());
 		}
 		else return("redirect:/progetto/visualizza?idSelected"+form.getIdProgetto());
 	}
+	private void  validationFormAttore(RedirectAttributes redirAttrs, AttoreViewCRUDForm form) {
+		if (form.getNome().trim().equals("")) {
+			redirAttrs.addFlashAttribute("nomeAttoreVuoto", "nomeAttoreVuoto");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+		if (attoreService.findByProgettoId(form.getIdProgetto()).stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
+			redirAttrs.addFlashAttribute("nomeCodiceAttoreDuplicato", "nomeCodiceAttoreDuplicato");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+		if (form.getCodice().trim().equals("")) {
+			redirAttrs.addFlashAttribute("codiceAttoreVuoto", "codiceAttoreVuoto");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+	}
+	
 	
 	@GetMapping("/progetto/visualizza")
 	public String  projectView1(@RequestParam(required=false, name="idSelected") Long idSelected,@RequestParam(required=false) Long attoreSelected, Model model) {

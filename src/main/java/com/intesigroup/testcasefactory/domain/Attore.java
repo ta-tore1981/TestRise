@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="attore")
@@ -29,8 +31,14 @@ public class Attore implements Serializable {
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
+	@NotBlank
 	@Basic(optional=false)
 	private String nome;
+	
+	@NotBlank
+	@Basic(optional=false)
+	private String codice;
 	
 	@Basic(optional=true)
 	private String caratteristiche_personali;
@@ -43,9 +51,6 @@ public class Attore implements Serializable {
 	
 	@Basic(optional=true)
 	private String esigenze_usabilita;
-	
-	@Basic(optional=false)
-	private String codice;
 	
 	@Basic(optional=false)
 	private String descrizione;

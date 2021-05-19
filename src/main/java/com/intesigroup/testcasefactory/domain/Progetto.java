@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="progetto")
@@ -24,10 +25,12 @@ public class Progetto implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@NotBlank
 	@Column(name="nome")
 	@Basic(optional=false)
 	private String nome;
 	
+	@NotBlank
 	@Column(name="codice")
 	@Basic(optional=false)
 	private String codice;

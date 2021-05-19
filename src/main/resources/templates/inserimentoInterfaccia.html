@@ -3,77 +3,94 @@
 	<head th:insert="general.html::headPart"/>
 <body>
 		<header th:insert="general.html::headerPart"/>
-		<div  class="alert alert-success text-center" role="alert" text="${success}" th:if="${success}" th:text="${success}"/>
-			<div  class="alert alert-danger text-center" role="alert" text="${error}" th:if="${error}" th:text="${error}"/>
+		<!-- sezione alert -->
+		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceInterfacciaDuplicato}" th:text="#{duplicato.interfaccia.nomecodice.validation}"/>
+		<div  class="alert alert-success text-center" role="alert" th:if="${confermaInterfacciaAbilitazione}" th:text="#{conferma.interfaccia.abilitazione.alert}"/>
+		<div  class="alert alert-success text-center" role="alert" th:if="${confermaInterfacciaDisabilitazione}" th:text="#{conferma.interfaccia.disabilitazione.alert}"/>
 		<div class="container-fluid">
+		<!-- menu interfacce -->
         	<div class="row">
             	<div class="menu-list-elements col-md-2">
           	  		<div class="list-group">
           	  			<div class="crea-button">
-            	        	<a class="list-group-item list-group-item-action active" th:text="@{Nuova interfaccia}" th:href="@{/interfaccia/visualizza(idProgetto=${form.idProgetto})}"/>
+            	        	<a class="list-group-item list-group-item-action active" th:text="#{crudinterfaccia.form.nuovainterfaccia.button}" th:href="@{/interfaccia/visualizza(idProgetto=${form.idProgetto})}"/>
             	   		</div>
       	             		<a th:each="element : ${interfacciaList}" th:class="${#strings.equals(form.id,element.id)} ? 'list-group-item list-group-item-action selected' : 'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/interfaccia/visualizza(idProgetto=${form.idProgetto},idSelected=${element.id})}"/>
      	    		</div>
    		      	</div>
-        	 	<div class="form-attr col-md-5">
-  		        	<h1>Gestione Interfacce</h1>
- 	              	<h2 th:if= ${form.id} &le; 0>Modifica</h2>
-				   	<h2 th:unless= ${form.id} &le; 0>Inserisci</h2>
+        	 	<div class="form-attr col-md-6">
+        	 	<!-- sezione CRUD Interfaccia -->
+  		        	<h1 th:text="#{crudinterfaccia.form.titolo.label}">Gestione Interfacce</h1>
+ 	              	<h2 th:if= ${form.id} &le; 0 th:text="#{crudinterfaccia.form.modifica.label}">Modifica</h2>
+				   	<h2 th:unless= ${form.id} &le; 0 th:text="#{crudinterfaccia.form.inserisci.label}">Inserisci</h2>
 					<form action="#" th:action="@{/interfaccia/formInterfaccia}" th:object="${form}" method="post">   
 				 		<input type="hidden" th:field="*{id}" >
 				 		<input type="hidden" th:field="*{idProgetto}">
 				 			<div class="form-group">
-                        		<label for="interfaccia">Interfaccia</label>
+                        		<label for="interfaccia" th:text="#{crudinterfaccia.form.nome.label}">Interfaccia</label>
+                        		
                        			<input type="text" class="form-control" id="interfaccia" th:field="*{nome}"
-								 placeholder="nome interfaccia" />
-                        		<small id="interfaccia-help" class="form-text text-muted">obbligatorio</small>
+								 placeholder="" />
+								 <p th:if="${nomeInterfacciaVuoto}" th:text="#{notnull.interfaccia.nome.validation}" th:class="${nomeInterfacciaVuoto} ? 'alert-danger'"></p>
+								 
+                        		<small id="interfaccia-help" class="form-text text-muted" th:text="#{crudinterfaccia.form.nome.help}">obbligatorio</small>
                         	</div>
                         	<div class="form-group">
-                        		<label for="codice">Codice</label>
+                        		<label for="codice" th:text="#{crudinterfaccia.form.codice.label}">Codice</label>
                        		 	<input type="text" class="form-control" id="codice" th:field="*{codice}"
-								 placeholder="codice" />
-                        		<small id="interfaccia-help" class="form-text text-muted">obbligatorio</small>
+								 placeholder="" />
+								 <p th:if="${codiceInterfacciaVuoto}" th:text="#{notnull.interfaccia.codice.validation}" th:class="${codiceInterfacciaVuoto} ? 'alert-danger'"></p>
+                        		<small id="interfaccia-help" class="form-text text-muted" th:text="#{crudinterfaccia.form.codice.help}">obbligatorio</small>
                         </div>
                         <div class="form-group">
-                        	<label for="codice">Descrizione</label>
+                        	<label for="codice" th:text="#{crudinterfaccia.form.descrizione.label}">Descrizione</label>
                        		 <input type="text" class="form-control" id="Descrizione" th:field="*{descrizione}"
 							  placeholder="descrizione" />
-                        	<small id="interfaccia-help" class="form-text text-muted">opzionale</small>
+                        	<small id="interfaccia-help" class="form-text text-muted" th:text="#{crudinterfaccia.form.descrizione.help}">opzionale</small>
                         </div>
                         <p>
-                        	<button class="btn btn-primary" type="submit" name="action" th:value="Progetto">Progetto</button>
-							<button class="btn btn-primary" type="submit" name="action" value="Inserisci" > Inserisci </button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Modifica">Modifica</button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Cancella">Cancella</button>
-							<button class="btn btn-primary" type="reset" value="Reset">Reset </button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" th:value="Funzionalita">funzionalita</button>
+							<button class="btn btn-dark" type="submit" name="action" value="Inserisci" th:text="#{crudinterfaccia.form.crea.button}" > Inserisci </button>
+							<button class="btn btn-dark"  th:disabled="*{id}==0" type="submit" name="action" value="Modifica" th:text="#{crudinterfaccia.form.modifica.button}">Modifica</button>
+							<button class="btn btn-dark"  th:disabled="*{id}==0" type="submit" name="action" value="Cancella" id="cancella-elemento"  th:text="#{crudinterfaccia.form.elimina.button}">Cancella</button>
+							<button class="btn btn-dark"  th:disabled="*{id}==0" type="reset" value="Reset" th:text="#{crudinterfaccia.form.reset.button}">Reset </button>
+						</p>
+						<p>
+								<button class="btn btn-primary" type="submit" name="action" th:value="Progetto" th:text="#{crudinterfaccia.form.progetti.button}">Progetto</button>
+								<button class="btn btn-primary"  th:disabled="*{id}==0" type="submit" name="action" th:value="Funzionalita" th:text="#{crudinterfaccia.form.funzionalita.button}">Funzionalita</button>
 						</p>
 					</form>
         		</div>
-        		<div class="col-md-5">
-        			<h2> Accessibilita interfacce</h2>
+        		<!-- form CRUD accessibilta interfacce -->
+        		<div class="col-md-4">
+        			<h2 th:text="#{accessibilitainterfaccia.table.titolo.label}"> </h2>
         				<div class="tabella-attori col-md-12">
-                    		<table class="table table-striped">
+                    		<table class="table">
                     			<thead>
                         			<tr>
-                            			<th scope="col">Nome</th>
-                            			<th scope="col">Abilita</th>
-                            			<th scope="coll">Disabiita</th>
+                            			<th scope="col" th:text="#{accessibiltainterfaccia.table.nome.columnlabel}">Nome</th>
+                            			<th scope="col" th:text="#{accessibiltainterfaccia.table.codice.columnlabel}">Codice</th>
+                            			<th scope="col" th:text="#{accessibiltainterfaccia.table.abilita.button}">Abilita</th>
+                            			<th scope="col" th:text="#{accessibiltainterfaccia.table.disabilita.button}">Disabiita</th>
                         			</tr>
                     			</thead>
                     			<tbody>
                         			<tr th:each="element: ${attoreList}">
-                        				<form th:action="@{/interfaccia/abilitazioneUtente}" th:object="${attoreForm}" method="post" >
+                        			
+                        				<form th:action="@{/interfaccia/abilitazioneUtente}" class="abilitazioneForm" th:object="${attoreForm}" method="post" >
+                        				
                         					<input  id ="idInterfaccia" th:name="idInterfaccia" th:value="${form.id}" type="hidden">
                         					<input  id ="id" th:name="id" th:value="${element.id}" type="hidden" path="id" >
                         					<td>
                         						<input  type=text class ="listAttrAttori" readonly="readonly" th:name="nome"  th:value="${element.nome}" path="nome"/>
                             				</td>
+                            				<td>
+                        						<input  type=text class ="listAttrAttori" readonly="readonly" th:name="codice"  th:value="${element.codice}" path="nome"/>
+                            				</td>
                             			    <td>
-                            					<button class="btn btn-primary" type="submit" name="action" value="Abilita">Abilita</button>
+                            					<button class="btn btn-dark" type="submit" th:disabled="!${form.id}" name="action" th:text="#{accessibiltainterfaccia.table.abilita.button}" value="Abilita">Abilita</button>
                             				</td>
                             				<td>
-                            					<button class="btn btn-primary" type="submit" name="action" value="Disabilita">Disabilita</button>
+                            					<button class="btn btn-dark" type="submit" th:disabled="!${form.id}" name="action" value="Disabilita" th:text="#{accessibiltainterfaccia.table.disabilita.button}">Disabilita</button>
                             				</td>
                         				</form>
                             		</tr>

@@ -1,100 +1,106 @@
 <!doctype html>
-<html>
-
-		<head th:insert="general.html::headPart">
-   
-		</head>
-
+<html lang="en">
+		<head th:insert="general.html::headPart"/>
 	<body>
 		<header th:insert="general.html::headerPart"/>
-
+		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceProgettoDuplicato}" th:text="#{duplicato.progetto.nomecodice.validation}"/>
+		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceAttoreDuplicato}" th:text="#{duplicato.attore.nomecodice.validation}"/>
 		<div class="container-fluid">
         	<div class="row">
         	<!--  Menu dei progetti -->
             	<div class="menu-list-elements col-md-2">
           	  		<div class="list-group">
           	  			<div class="crea-button">
-            	        	<a class="list-group-item list-group-item-action active" th:text="@{Nuovo progetto}" th:href="@{/progetto/visualizza}"/>
+            	        	<a class="list-group-item list-group-item-action active" th:text="#{crudprogetto.form.nuovoprogetto.button}" th:href="@{/progetto/visualizza}"/>
             	   		</div>
       	             	<a th:each="element : ${progettoList}" th:class="${#strings.equals(form.id,element.id)} ? 'list-group-item list-group-item-action selected' : 'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/progetto/visualizza(idSelected=${element.id})}"/>
      	    		</div>
    		      	</div>
    		      	<!--  Sezione inserimento progetto -->
         	 	<div class="form-attr col-md-5">
-  		        	<h1>Gestione progetti</h1>
- 	              	<h2 th:if= ${form.id} &le; 0>Modifica</h2>
-				   	<h2 th:unless= ${form.id} &le; 0>Inserisci</h2>
+  		        	<h1 th:text="#{crudprogetto.form.titolo.label}">Gestione progetti</h1>
+ 	              	<h2 th:if= ${form.id} &le; 0 th:text="#{crudprogetto.form.modifica.label}"> Modifica</h2>
+				   	<h2 th:unless= ${form.id} &le; 0 th:text="#{crudprogetto.form.inserisci.label}">Inserisci</h2>
 					<form  th:action="@{/progetto/formProgetto}" th:object="${form}" method="post">   
 				 		<input type="hidden" th:field="*{id}" >
 				 			<div class="form-group">
-                        		<label for="progetto">Progetto</label>
+                        		<label for="progetto" th:text="#{crudprogetto.form.nome.label}">Progetto</label>
+                        		
                        			<input type="text" class="form-control" id="progetto" th:field="*{nome}"
-								 placeholder="nome progetto" />
-                        		<small id="progetto-help" class="form-text text-muted">obbligatorio</small>
+								 placeholder=""/>
+								 <p th:if="${nomeProgettoVuoto}" th:text="#{notnull.progetto.nome.validation}" th:class="${nomeProgettoVuoto} ? 'alert-danger'"></p>
+                        		<small id="progetto-help-nome progetto" class="form-text text-muted" th:text="#{crudprogetto.form.nome.help}">obbligatorio</small>
                         	</div>
                         	<div class="form-group">
-                        		<label for="codice">Codice</label>
+                        		<label for="codice" th:text="#{crudprogetto.form.codice.label}">Codice</label>
                        		 	<input type="text" class="form-control" id="codice" th:field="*{codice}"
-								 placeholder="codice" />
-                        		<small id="progetto-help" class="form-text text-muted">obbligatorio</small>
+								 placeholder=""/>
+								 <p th:if="${codiceProgettoVuoto}" th:text="#{notnull.progetto.codice.validation}" th:class="${codiceProgettoVuoto} ? 'alert-danger'"></p>
+                        		<small id="progetto-help-codice-progetto" class="form-text text-muted" th:text="#{crudprogetto.form.codice.help}">obbligatorio</small>
                         </div>
                         <div class="form-group">
-                        	<label for="codice">Descrizione</label>
+                        	<label for="codice" th:text="#{crudprogetto.form.descrizione.label}">Descrizione</label>
                        		 <input type="text" class="form-control" id="Descrizione" th:field="*{descrizione}"
-							  placeholder="descrizione" />
-                        	<small id="progetto-help" class="form-text text-muted">opzionale</small>
+							  placeholder="" />
+                        	<small id="progetto-help" class="form-text text-muted"th:text="#{crudprogetto.form.descrizione.help}">opzionale</small>
                         </div>
+                        <!-- bottoni CRUD progetto -->
                         <p>
-							<button class="btn btn-primary" type="submit" name="action" value="Inserisci" > Inserisci </button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Modifica">Modifica</button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Cancella">Cancella</button>
-							<button class="btn btn-primary" type="reset" value="Reset">Reset </button>
-							<button class="btn btn-primary" th:if=(*{id}!=0) type="submit" name="action" value="Interfaccia">Interfacce -></button>
+							<button class="btn btn-dark" type="submit" name="action" th:text="#{crudprogetto.form.crea.button}" value="Inserisci" > Inserisci </button>
+							<button class="btn btn-dark" th:disabled="*{id}==0" type="submit" name="action"  th:text="#{crudprogetto.form.modifica.button}" value="Modifica">Modifica</button>
+							<button class="btn btn-dark" th:disabled="*{id}==0" type="submit" name="action" th:text="#{crudprogetto.form.elimina.button}" value="Cancella" id="cancella-elemento">Cancella</button>
+							<button class="btn btn-dark" th:disabled="*{id}==0" type="reset" value="Reset" th:text="#{crudprogetto.form.reset.button}">Reset </button>
+							
+						</p>
+						<p>
+							<button class="btn btn-primary" th:disabled="*{id}==0"  type="submit" name="action" value="Interfaccia" th:text="#{crudprogetto.form.interfacce.button}">Interfacce</button>
 						</p>
 					</form>
         		</div>
         	<!--  Sezione inserimento attore -->
         		<div class="col-md-5">
-                	<form class="form-row" th:action="@{/attore/formAttore}" th:object="${attoreForm}" method="post" >
-                		<input type="hidden" th:field="*{id}">
+                	<form class="row gy-2 gx-3 align-items-center" th:action="@{/attore/formAttore}" th:object="${attoreForm}" method="post" >
+                		<input type="hidden" th:field="*{id}" th:id="id-attore">
                 		<input type="hidden" th:field="*{idProgetto}">
                     	<div class="col-md-4">
-                        	<label for="nome-attore">Attore</label>
-                        	<input type="text" class="form-control mb-2 mr-sm-2" id="nome-attore" th:field="*{nome}" 
+                        	<label for="nome-attore" th:text="#{crudattore.form.nome.label}">Attore</label>
+                        	<input type="text" class="form-control mb-2 mr-sm-2" th:disabled="!${form.id}" id="nome-attore" th:field="*{nome}" 
                             placeholder="">
+                            <p th:if="${nomeAttoreVuoto} or ${codiceAttoreVuoto}" th:text="${nomeAttoreVuoto} ? #{notnull.attore.nome.validation} : '&nbsp;'" th:class="${nomeAttoreVuoto} ? 'alert-danger'"></p>
                      	</div>
                    		 <div class="col-md-4">
-                        	<label for="codice-attore">Codice attore</label>
-                        	<input type="text" class="form-control mb-2 mr-sm-2" id="codice-attore" th:field="*{codice}" 
+                        	<label for="codice-attore" th:text="#{crudattore.form.codice.label}">Codice attore</label>
+                        	<input type="text" class="form-control mb-2 mr-sm-2" th:disabled="!${form.id}" id="codice-attore" th:field="*{codice}" 
                             placeholder="">
+                            <p th:if="${codiceAttoreVuoto} or ${nomeAttoreVuoto}" th:text="${codiceAttoreVuoto} ? #{notnull.attore.codice.validation} : '&nbsp;'" th:class="${codiceAttoreVuoto} ? 'alert-danger'"></p>
                     	</div>
                     	<div class="col-md-4">
-                        	<label for="descrizione-attore">Descrizione</label>
-                       		<input type="text" class="form-control mb-2 mr-sm-2" id="descrizione-attore" th:field="*{descrizione}" 
+                        	<label for="descrizione-attore" th:text="#{crudattore.form.descrizione.label}">Descrizione</label>
+                       		<input type="text" class="form-control mb-2 mr-sm-2" th:disabled="!${form.id}" id="descrizione-attore" th:field="*{descrizione}" 
                             placeholder="">
+                            <p th:if="${codiceAttoreVuoto} or ${nomeAttoreVuoto}"  th:text="@{&nbsp;}"></p>
                     	</div>
-                    	<div class="col-md-2">
-                            <button class="btn btn-primary" type="submit" name="action"
-                                value="Inserisci">Inserisci</button>
-                    	</div>
-                    	<div class="col-md-2">
-                            <button class="btn btn-primary" type="submit"  name="action"
-                                value="Modifica">Modifica</button>
-                    	</div>
-                    	<div class="col-md-2">
-                        	<button class="btn btn-primary" type="submit" name="action"
+                    	<!-- inserimento bottoni CRUD attori -->
+                    	<div class="col-md-6">
+                            <button  class="btn btn-dark"  th:disabled="!${form.id}"  type="submit" name="action"  width="100%" th:text="#{crudattore.form.crea.button}"
+                                value="Inserisci" th:enabled="*{id}">Inserisci</button>
+                            
+                            <button class="btn btn-dark" th:disabled="!${form.id} or !${attoreForm.id}"  type="submit"   name="action"  th:text="#{crudattore.form.modifica.button}"
+                            	value="Modifica">Modifica</button>
+                        	
+                        	<button class="btn btn-dark" th:disabled="!${form.id} or !${attoreForm.id}" type="submit" name="action" id="cancella-attore" th:text="#{crudattore.form.elimina.button}"
                             value="Cancella">Cancella</button>
                     	</div>  	
                 	</form>
                 	<!--  Creazione tabella attori -->
                     <div class="tabella-attori col-md-12">
-                    	<table class="table table-striped">
+                    	<table class="table">
                     		<thead>
                         		<tr>
-                            		<th scope="col">Nome</th>
-                            		<th scope="col">Codice</th>
-                            		<th scope="col">Descrizione</th>
-                            		<th scope="col">Seleziona</th>
+                            		<th scope="col" th:text="#{tabellaattore.table.nome.label}">Nome</th>
+                            		<th scope="col" th:text="#{tabellaattore.table.codice.label}">Codice</th>
+                            		<th scope="col" th:text="#{tabellaattore.table.descrizione.label}">Descrizione</th>
+                            		<th scope="col" th:text="#{tabellaattore.table.seleziona.label}">Seleziona</th>
                         		</tr>
                     		</thead>
                     		<tbody>
@@ -103,7 +109,7 @@
                             		<td th:text="${element.codice}"></td>
                             		<td th:text="${element.descrizione}"></td>
                             		<td>
-                            			<a th:class="${element.id==attoreForm.id ? 'btn btn-primary selected' : 'btn btn-primary'}" th:href="@{/progetto/visualizza(idSelected=${form.id},attoreSelected=${element.id})}" role="button">Seleziona</a>
+                            			<a th:class="${element.id==attoreForm.id ? 'btn btn-primary selected' : 'btn btn-primary'}" th:href="@{/progetto/visualizza(idSelected=${form.id},attoreSelected=${element.id})}" role="button" th:text="#{tabellaattore.table.seleziona.link}">Seleziona</a>
                             		</td>
                             	</tr>
                             </tbody>

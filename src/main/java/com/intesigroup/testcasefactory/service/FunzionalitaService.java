@@ -11,5 +11,5 @@ public interface FunzionalitaService {
 	public List<Funzionalita> findAll();
 	public Optional<Funzionalita> getFunzionalita(long id);
 	public void delete(long idFunzionalita);
-
+	public List<Funzionalita> findByInterfacciaId(long id);
 }

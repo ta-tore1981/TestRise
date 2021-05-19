@@ -11,4 +11,5 @@ public interface FocusService {
 	public List<Focus> findAll();
 	public Optional<Focus> getFocus(long id);
 	public void deleteById(long id);
+	public List<Focus> findByFunzionalitaId(long id);
 }

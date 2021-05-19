@@ -17,15 +17,13 @@
 
 
 }
+
 .selected:hover{
     background-color: orange;
     color: gray;
 }
 .tabella-attori{
 	margin-top:20px;
-	margin-left:0px;
-	padding-left:0px;
-	padding-right:0px;
 	height: 430px;
 	overflow-y:scroll;
 }
@@ -35,3 +33,8 @@
     outline-width: 0;    
     cursor: default; 
 }
+
+.table{
+	table-layout:fixed;
+}	
+

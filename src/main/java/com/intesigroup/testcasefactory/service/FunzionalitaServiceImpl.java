@@ -35,5 +35,8 @@ public class FunzionalitaServiceImpl implements FunzionalitaService{
 	public void delete(long idFunzionalita) {
 		funzionalitaService.deleteById(idFunzionalita);
 	}
+	public List<Funzionalita> findByInterfacciaId(long id){
+		return funzionalitaService.findByInterfacciaId(id);
+	}
 
 }

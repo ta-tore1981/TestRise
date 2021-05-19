@@ -15,5 +15,5 @@ public interface InterfacciaService {
 	public Optional<Interfaccia> getInterfaccia(long id);
 	public void deleteById(long id);
 	public void deleteByInterfaccia(Interfaccia interfaccia);
-	
+	public List<Interfaccia> findByProgettoId(long id);
 }

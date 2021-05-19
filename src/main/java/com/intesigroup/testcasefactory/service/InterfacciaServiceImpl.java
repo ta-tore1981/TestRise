@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+
+import com.intesigroup.testcasefactory.domain.Attore;
 import com.intesigroup.testcasefactory.domain.Interfaccia;
 import com.intesigroup.testcasefactory.repository.InterfacciaRepository;
 
@@ -31,9 +33,6 @@ public class InterfacciaServiceImpl implements InterfacciaService{
 	public Optional<Interfaccia> getInterfaccia(long id) {
 		return interfacciaRepository.findById(id);
 	}
-	/*public void deleteById(long id) {
-		interfacciaRepository.deleteById(id);
-	}*/
 	@Override
 	public void deleteByInterfaccia(Interfaccia interfaccia) {
 		interfacciaRepository.delete(interfaccia);
@@ -41,6 +40,9 @@ public class InterfacciaServiceImpl implements InterfacciaService{
 	}
 	public void deleteById(long id) {
 		interfacciaRepository.deleteById(id);
+	}
+	public List<Interfaccia> findByProgettoId(long id) {
+		return interfacciaRepository.findByProgettoId(id);
 	}
 	
 }

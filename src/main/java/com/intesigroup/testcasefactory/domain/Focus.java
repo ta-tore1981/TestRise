@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -24,9 +26,11 @@ public class Focus implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@NotBlank
 	@Basic(optional=false)
 	private String nome;
 	
+	@NotBlank
 	@Basic(optional=false)
 	private String codice;
 	

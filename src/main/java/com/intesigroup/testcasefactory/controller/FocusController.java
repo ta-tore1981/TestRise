@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intesigroup.testcasefactory.domain.Focus;
 import com.intesigroup.testcasefactory.domain.Funzionalita;
 import com.intesigroup.testcasefactory.entityView.FocusViewCRUDForm;
+import com.intesigroup.testcasefactory.entityView.InterfacciaViewCRUDForm;
 import com.intesigroup.testcasefactory.service.FocusService;
 import com.intesigroup.testcasefactory.service.FunzionalitaService;
 
@@ -31,23 +33,30 @@ public class FocusController {
 	
 
 	@PostMapping("/focus/formFocus")
-	public String insFocus(@ModelAttribute FocusViewCRUDForm form,String action, Model model) {
+	public String insFocus(@ModelAttribute FocusViewCRUDForm form,String action, RedirectAttributes redirAttrs, Model model) {
 		Focus focus= new Focus();
 		if (action.equals("Inserisci")){
-			focus.setId(0);
-			focus.setFunzionalita(funzionalitaService.getFunzionalita(form.getIdFunzionalita()).orElse(null));
-			focus.setDescrizione(form.getDescrizione());
-			focus.setCodice(form.getCodice());		
-			focus.setNome(form.getNome());
-			focusService.save(focus);
+			this.validationParam(redirAttrs, form);
+			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
+				focus.setId(0);
+				focus.setFunzionalita(funzionalitaService.getFunzionalita(form.getIdFunzionalita()).orElse(null));
+				focus.setDescrizione(form.getDescrizione());
+				focus.setCodice(form.getCodice());		
+				focus.setNome(form.getNome());
+				focusService.save(focus);
+			}
 			return("redirect:/focus/visualizza?idFunzionalita="+form.getIdFunzionalita());
 		}
 		if (action.equals("Modifica")){
-			focus= focusService.getFocus(form.getId()).orElse(null);
-			focus.setDescrizione(form.getDescrizione());
-			focus.setCodice(form.getCodice());		
-			focus.setNome(form.getNome());
-			focusService.save(focus);
+			this.validationParam(redirAttrs, form);
+			if (!redirAttrs.getFlashAttributes().containsKey("nomeFocusVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceFocusVuoto")) {
+				redirAttrs.getFlashAttributes().remove("nomeCodiceFocusDuplicato");
+				focus= focusService.getFocus(form.getId()).orElse(null);
+				focus.setDescrizione(form.getDescrizione());
+				focus.setCodice(form.getCodice());		
+				focus.setNome(form.getNome());
+				focusService.save(focus);
+			}
 			return("redirect:/focus/visualizza?idSelected="+form.getId()+"&idFunzionalita="+form.getIdFunzionalita());
 		}
 		if (action.equals("Funzionalita")) {
@@ -60,6 +69,22 @@ public class FocusController {
 		}
 		return("redirect:focus/visualizza?idFunzionalita="+form.getIdFunzionalita());
 	}
+	
+	private void  validationParam(RedirectAttributes redirAttrs, FocusViewCRUDForm form) {
+		if (form.getNome().trim().equals("")) {
+			redirAttrs.addFlashAttribute("nomeFocusVuoto", "nomeFocusVuoto");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+		if (focusService.findByFunzionalitaId(form.getIdFunzionalita()).stream().filter(p->p.getNome().trim().equals(form.getNome().trim()) || p.getCodice().trim().toUpperCase().equals(form.getCodice().trim().toUpperCase())).findAny().orElse(null)!=null) {
+			redirAttrs.addFlashAttribute("nomeCodiceFocusDuplicato", "nomeCodiceFocusaDuplicato");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+		if (form.getCodice().trim().equals("")) {
+			redirAttrs.addFlashAttribute("codiceFocusVuoto", "codiceFocusVuoto");
+			redirAttrs.addFlashAttribute("error","true");
+		}
+	}
+	
 	
 	@GetMapping("/focus/visualizza")
 	public String  projectView1(@RequestParam(required=false, name="idSelected") Long idSelected, @RequestParam(required=true, name="idFunzionalita") Long idFunzionalita, Model model) {
