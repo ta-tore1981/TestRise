@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
-	<head th:insert="general.html::headPart"/>
+	<head th:insert="generalTemplate.html::headPart"/>
 <body>
-		<header th:insert="general.html::headerPart"/>
+		<header th:insert="generalTemplate.html::headerPart"/>
 		<!-- sezione alert -->
 		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceInterfacciaDuplicato}" th:text="#{duplicato.interfaccia.nomecodice.validation}"/>
 		<div  class="alert alert-success text-center" role="alert" th:if="${confermaInterfacciaAbilitazione}" th:text="#{conferma.interfaccia.abilitazione.alert}"/>

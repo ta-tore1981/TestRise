@@ -11,11 +11,10 @@
 .container-fluid{
     width: 90%;
 }
+
 .selected {
 	background-color: orange;
 	color:black;
-
-
 }
 
 .selected:hover{
@@ -36,5 +35,14 @@
 
 .table{
 	table-layout:fixed;
-}	
+}
+.form-select{
+    background-color:#ffe0b5;
+}
 
+.tabella-testcase{
+	margin-top:200px;
+}
+.form-floating{
+	width:250px;
+}

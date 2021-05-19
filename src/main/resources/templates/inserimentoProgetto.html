@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
-		<head th:insert="general.html::headPart"/>
+		<head th:insert="generalTemplate.html::headPart"/>
 	<body>
-		<header th:insert="general.html::headerPart"/>
+		<header th:insert="generalTemplate.html::headerPart"/>
 		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceProgettoDuplicato}" th:text="#{duplicato.progetto.nomecodice.validation}"/>
 		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceAttoreDuplicato}" th:text="#{duplicato.attore.nomecodice.validation}"/>
 		<div class="container-fluid">

@@ -1,13 +1,23 @@
 package com.intesigroup.testcasefactory.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,7 +31,20 @@ public class Approccio implements Serializable{
 	private long id;
 	
 	@Basic(optional=false)
+	@Column(name="nome")
 	private String nome;
+	
+	@Column(name="codice")
+	@Basic(optional=false)
+	private String codice;
+	
+	@Column(name="descrizione")
+	@Basic(optional=true)
+	private String descrizione;
+	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="approccio")
+	Set<TestCase> testCase=new HashSet<>();
+	
 	
 	public long getId() {
 		return id;
@@ -59,14 +82,13 @@ public class Approccio implements Serializable{
 		return serialVersionUID;
 	}
 
-	@Basic(optional=false)
-	private String codice;
-	
-	@Basic(optional=true)
-	private String descrizione;
-	
-	
-	
-	
+	public Set<TestCase> getTestCase() {
+		return testCase;
+	}
 
+	public void setTestCase(Set<TestCase> testCase) {
+		this.testCase = testCase;
+	}
+	
+	
 }

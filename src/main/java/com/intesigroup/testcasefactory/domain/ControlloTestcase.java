@@ -8,23 +8,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="controllo_testcase")
 
-public class ControlloTestcase implements Serializable {
+public class ControlloTestCase implements Serializable {
 	private static final long serialVersionUID = -5031623264043634242L;
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Basic(optional=false)
-	private String nome;
+	@Basic(optional=true)
+	@Column(name="controllo")
+	private String controllo;
 	
-	@Basic(optional=false)
-	private String codice;
+	@Column(name="installation_test")
+	private boolean IntellationTest;
+	
+	@ManyToOne
+	@JoinColumn(name="id_tipo_controllo",referencedColumnName="id")
+	TipoControllo tipoControllo= new TipoControllo();
 	
 	public long getId() {
 		return id;
@@ -34,37 +41,34 @@ public class ControlloTestcase implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getControllo() {
+		return controllo;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCodice() {
-		return codice;
-	}
-
-	public void setCodice(String codice) {
-		this.codice = codice;
-	}
-
-	public String getDescrizione() {
-		return descrizione;
-	}
-
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setControllo(String descrizione) {
+		this.controllo = descrizione;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	@Basic(optional=true)
-	private String descrizione;
+	public boolean isIntellationTest() {
+		return IntellationTest;
+	}
 
+	public void setIntellationTest(boolean intellationTest) {
+		IntellationTest = intellationTest;
+	}
+
+	public TipoControllo getTipoControllo() {
+		return tipoControllo;
+	}
+
+	public void setTipoControllo(TipoControllo tipoControllo) {
+		this.tipoControllo = tipoControllo;
+	}
+	
 	
 
 }

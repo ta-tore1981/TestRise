@@ -104,15 +104,15 @@ public class InterfacciaController {
 			for (Funzionalita funzionalita : interfaccia.getFunzionalita()) {
 				attore.getFunzionalita().add(funzionalita);
 				attoreService.save(attore);
-				redirAttrs.addFlashAttribute("confermaInterfacciaAbilitazione","confermaInterfacciaAbilitazione");
 			}
+			redirAttrs.addFlashAttribute("confermaInterfacciaAbilitazione","confermaInterfacciaAbilitazione");
 		}
 		if (action.equals("Disabilita")){
 			for (Funzionalita funzionalita : interfaccia.getFunzionalita()) {
 				attore.getFunzionalita().remove(funzionalita);
 				attoreService.save(attore);
-				redirAttrs.addFlashAttribute("confermaInterfacciaDisabilitazione","confermaInterfacciaDisabilitazionee");
 			}
+			redirAttrs.addFlashAttribute("confermaInterfacciaDisabilitazione","confermaInterfacciaDisabilitazionee");
 		}
 		return("redirect:/interfaccia/visualizza?idProgetto="+attore.getProgetto().getId()+"&idSelected="+idInterfaccia);
 	}

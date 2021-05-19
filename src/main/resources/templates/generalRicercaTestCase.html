@@ -18,13 +18,13 @@
 </head>
 <body>
     <header th:fragment="headerPart">
-       <div class="container-fluid">
+       <div class="container-fluid" style="background-color: #ffffff;">
             <div class="header-site">
                 <div class="row">
-                    <div class="logo col-md-2 ">
+                    <div class="logo col-md-2">
                         <img th:src="@{/images/intesiIcon2.png}" title="logo"/>
                     </div>
-                    <div class="col-md-10 border">
+                    <div class="col-md-10">
                         <h1 class="font-weight-bold" th:text="#{pagina.nomesistema.label}">
                         </h1>
                         <h4 class="font-weight-bold" th:text="#{pagina.nomesocieta.label}">
@@ -34,6 +34,5 @@
             </div>
         </div>
     </header>
-    
 </body>
 </html>

@@ -50,6 +50,9 @@ public class Funzionalita {
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="funzionalita", orphanRemoval=true)
 	private Set<Focus> focus=new HashSet<>();
+	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="funzionalita")
+	private Set<TestCase> testCase=new HashSet<>();
 
 	public long getId() {
 		return id;
@@ -98,4 +101,13 @@ public class Funzionalita {
 	public void setFocus(Set<Focus> focus) {
 		this.focus = focus;
 	}
+
+	public Set<TestCase> getTestCase() {
+		return testCase;
+	}
+
+	public void setTestCase(Set<TestCase> testCase) {
+		this.testCase = testCase;
+	}
+	
 }

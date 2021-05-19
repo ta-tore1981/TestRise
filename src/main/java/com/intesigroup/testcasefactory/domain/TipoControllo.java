@@ -1,13 +1,18 @@
 package com.intesigroup.testcasefactory.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +27,9 @@ public class TipoControllo implements Serializable{
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="tipoControllo")
+	Set<ControlloTestCase>  controlloTestCase = new HashSet<ControlloTestCase>();
 	
 	@Basic(optional=false)
 	private String nome;
@@ -53,16 +61,13 @@ public class TipoControllo implements Serializable{
 		this.codice = codice;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public Set<ControlloTestCase> getControlloTestCase() {
+		return controlloTestCase;
+	}
+
+	public void setControlloTestCase(Set<ControlloTestCase> controlloTestCase) {
+		this.controlloTestCase = controlloTestCase;
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-
 }

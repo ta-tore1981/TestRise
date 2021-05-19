@@ -56,7 +56,7 @@ public class Attore implements Serializable {
 	private String descrizione;
 	
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="id_progetto", referencedColumnName="id")
 	private Progetto progetto= new Progetto();
 	
@@ -66,6 +66,9 @@ public class Attore implements Serializable {
 			joinColumns = @JoinColumn(name = "id_attore"), 
             inverseJoinColumns = @JoinColumn(name = "id_funzione"))
 	Set<Funzionalita> funzionalita;
+	
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="attore")
+	private Set<TestCase> testCase=new HashSet<>();
 
 	public long getId() {
 		return id;
@@ -150,6 +153,13 @@ public class Attore implements Serializable {
 	public void setFunzionalita(Set<Funzionalita> funzionalita) {
 		this.funzionalita = funzionalita;
 	}
-	
 
+	public Set<TestCase> getTestCase() {
+		return testCase;
+	}
+
+	public void setTestCase(Set<TestCase> testCase) {
+		this.testCase = testCase;
+	}
+	
 }

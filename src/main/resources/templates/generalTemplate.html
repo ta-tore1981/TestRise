@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<head th:fragment="headPart">
+ <meta charset="utf-8">
+    <title>Test rise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" defer>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous" defer></script>
+    <script type="application/javascript" th:src="@{/js/custom.js}" charset="utf-8" defer></script>
+    
+    <link rel="stylesheet" th:href="@{/css/custom.css}"/>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+</head>
+<body>
+    <header th:fragment="headerPart">
+       <div class="container-fluid" style="background-color: #ffffff;">
+            <div class="header-site">
+                <div class="row">
+                    <div class="logo col-md-2">
+                        <img th:src="@{/images/intesiIcon2.png}" title="logo"/>
+                    </div>
+                    <div class="col-md-10">
+                        <h1 class="font-weight-bold" th:text="#{pagina.nomesistema.label}">
+                        </h1>
+                        <h4 class="font-weight-bold" th:text="#{pagina.nomesocieta.label}">
+                        </h4>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

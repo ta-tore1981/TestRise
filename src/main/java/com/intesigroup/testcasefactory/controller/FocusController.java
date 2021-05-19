@@ -35,8 +35,8 @@ public class FocusController {
 	@PostMapping("/focus/formFocus")
 	public String insFocus(@ModelAttribute FocusViewCRUDForm form,String action, RedirectAttributes redirAttrs, Model model) {
 		Focus focus= new Focus();
+		this.validationParam(redirAttrs, form);
 		if (action.equals("Inserisci")){
-			this.validationParam(redirAttrs, form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				focus.setId(0);
 				focus.setFunzionalita(funzionalitaService.getFunzionalita(form.getIdFunzionalita()).orElse(null));

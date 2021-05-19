@@ -45,6 +45,10 @@ public class Progetto implements Serializable{
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="progetto", orphanRemoval=true)
 	private Set<Attore> Attore=new HashSet<>();
 	
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="progetto")
+	private Set<TestCase> testCase=new HashSet<>();
+	
+	
 	public long getId() {
 		return id;
 	}
@@ -89,4 +93,11 @@ public class Progetto implements Serializable{
 	public void setAttore(Set<Attore> attore) {
 		Attore = attore;
 	}
+	public Set<TestCase> getTestCase() {
+		return testCase;
+	}
+	public void setTestCase(Set<TestCase> testCase) {
+		this.testCase = testCase;
+	}
+	
 }

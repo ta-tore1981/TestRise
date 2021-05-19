@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
-  <head th:insert="general.html::headPart"/>
+  <head th:insert="generalTemplate.html::headPart"/>
 <body>
-   <header th:insert="general.html::headerPart"/>
+   <header th:insert="generalTemplate.html::headerPart"/>
    <!-- sezione alert  -->
    <div  class="alert alert-success text-center" role="alert" th:if="${confermaFunzionalitaAbilitazione}" th:text="#{conferma.funzionalita.abilitazione.alert}"/>
    <div  class="alert alert-success text-center" role="alert" th:if="${confermaFunzionalitaDisabilitazione}" th:text="#{conferma.funzionalita.disabilitazione.alert}"/>

@@ -38,10 +38,10 @@ public class ProgettoController {
 	@PostMapping("/progetto/formProgetto")
 	public String insProgetti(@ModelAttribute ProgettoViewCRUDForm form,String action,RedirectAttributes redirAttrs,  Model model) {
 		Progetto progetto= new Progetto();
+		this.validationFormProgetto(redirAttrs, form);
 		if (action.equals("Inserisci")){
 			//verifica dei dati per la creazione del progetto
 			// creazione progetto
-			this.validationFormProgetto(redirAttrs, form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				progetto.setId(0);
 				progetto.setDescrizione(form.getDescrizione().trim());
@@ -90,8 +90,8 @@ public class ProgettoController {
 	@PostMapping("/attore/formAttore")
 	public String formAttore(@ModelAttribute AttoreViewCRUDForm form, String action, RedirectAttributes redirAttrs ) {
 		Attore attore = new Attore();
+		this.validationFormAttore(redirAttrs, form);
 		if (action.equals("Inserisci")) {
-			this.validationFormAttore(redirAttrs, form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				attore.setId(0);
 				attore.setDescrizione(form.getDescrizione());
