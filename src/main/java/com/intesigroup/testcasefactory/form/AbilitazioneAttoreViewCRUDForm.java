@@ -1,4 +1,4 @@
-package com.intesigroup.testcasefactory.entityView;
+package com.intesigroup.testcasefactory.form;
 
 import com.intesigroup.testcasefactory.domain.Attore;
 import com.intesigroup.testcasefactory.domain.Funzionalita;

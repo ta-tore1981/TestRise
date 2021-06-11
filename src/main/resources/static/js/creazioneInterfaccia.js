@@ -1,3 +1,4 @@
+/* submit abilitazioni interfacce */
 var formAbilitazioni=window.document.forms;
 if (formAbilitazioni){
 	for (i=0; i<formAbilitazioni.length; i++){
@@ -9,9 +10,3 @@ if (formAbilitazioni){
         }
     }
 }
-var cancella=document.getElementById("cancella-elemento");
-cancella.addEventListener("click", function(e) {
-	if (!confirm("sei sicuro di voler cancellare l'elemento selezionato?")) {
-      	e.preventDefault();
-	}
-})

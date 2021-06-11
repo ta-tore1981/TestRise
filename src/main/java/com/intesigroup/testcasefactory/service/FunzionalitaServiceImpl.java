@@ -38,5 +38,8 @@ public class FunzionalitaServiceImpl implements FunzionalitaService{
 	public List<Funzionalita> findByInterfacciaId(long id){
 		return funzionalitaService.findByInterfacciaId(id);
 	}
+	public List<Funzionalita> findByProgettoId(long id){
+		return funzionalitaService.findByInterfacciaId(id);
+	}
 
 }

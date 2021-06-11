@@ -16,8 +16,8 @@ public class AttoreServiceImpl implements AttoreService{
 	@Autowired
 	AttoreRepository attoreRepository;
 	
-	public void save(Attore attore) {
-		attoreRepository.save(attore);
+	public Attore save(Attore attore) {
+		 return attoreRepository.save(attore);
 	}
 	public void deleteById(long id) {
 		attoreRepository.deleteById(id);

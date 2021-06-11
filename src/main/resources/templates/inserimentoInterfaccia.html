@@ -3,6 +3,7 @@
 	<head th:insert="generalTemplate.html::headPart"/>
 <body>
 		<header th:insert="generalTemplate.html::headerPart"/>
+		<script type="application/javascript" th:src="@{/js/commonCreazioneCondizioni.js}" charset="utf-8" defer></script>
 		<!-- sezione alert -->
 		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceInterfacciaDuplicato}" th:text="#{duplicato.interfaccia.nomecodice.validation}"/>
 		<div  class="alert alert-success text-center" role="alert" th:if="${confermaInterfacciaAbilitazione}" th:text="#{conferma.interfaccia.abilitazione.alert}"/>

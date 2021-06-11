@@ -17,8 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intesigroup.testcasefactory.domain.Focus;
 import com.intesigroup.testcasefactory.domain.Funzionalita;
-import com.intesigroup.testcasefactory.entityView.FocusViewCRUDForm;
-import com.intesigroup.testcasefactory.entityView.InterfacciaViewCRUDForm;
+import com.intesigroup.testcasefactory.form.FocusViewCRUDForm;
+import com.intesigroup.testcasefactory.form.InterfacciaViewCRUDForm;
 import com.intesigroup.testcasefactory.service.FocusService;
 import com.intesigroup.testcasefactory.service.FunzionalitaService;
 
@@ -35,8 +35,8 @@ public class FocusController {
 	@PostMapping("/focus/formFocus")
 	public String insFocus(@ModelAttribute FocusViewCRUDForm form,String action, RedirectAttributes redirAttrs, Model model) {
 		Focus focus= new Focus();
-		this.validationParam(redirAttrs, form);
 		if (action.equals("Inserisci")){
+			this.validationParam(redirAttrs, form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				focus.setId(0);
 				focus.setFunzionalita(funzionalitaService.getFunzionalita(form.getIdFunzionalita()).orElse(null));

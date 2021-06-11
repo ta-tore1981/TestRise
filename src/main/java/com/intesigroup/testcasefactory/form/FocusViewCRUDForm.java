@@ -1,48 +1,69 @@
-package com.intesigroup.testcasefactory.entityView;
+package com.intesigroup.testcasefactory.form;
 
-public class AttoreViewCRUDForm {
+public class FocusViewCRUDForm {
 	Long id;
 	String nome;
 	String descrizione;
-	Long idProgetto;
+	Long idFunzionalita;
 	String codice;
-
-	public AttoreViewCRUDForm() {
+	
+	
+	public FocusViewCRUDForm() {
 		id=null;
+		idFunzionalita=null;
 		nome="";
 		descrizione="";
 		codice="";
-		idProgetto=null;
 	}
+
+
 	public Long getId() {
 		return id;
 	}
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
 	public String getNome() {
 		return nome;
 	}
-	public void setNome(String attore) {
-		this.nome = attore;
+
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
+
+
 	public String getDescrizione() {
 		return descrizione;
 	}
+
+
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-	public Long getIdProgetto() {
-		return idProgetto;
+
+
+	public Long getIdFunzionalita() {
+		return idFunzionalita;
 	}
-	public void setIdProgetto(Long idProgetto) {
-		this.idProgetto = idProgetto;
+
+
+	public void setIdFunzionalita(Long idFunzionalita) {
+		this.idFunzionalita = idFunzionalita;
 	}
+
+
 	public String getCodice() {
 		return codice;
 	}
+
+
 	public void setCodice(String codice) {
 		this.codice = codice;
 	}
-
+	
 }

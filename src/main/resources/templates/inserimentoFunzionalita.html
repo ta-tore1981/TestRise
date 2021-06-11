@@ -3,6 +3,8 @@
   <head th:insert="generalTemplate.html::headPart"/>
 <body>
    <header th:insert="generalTemplate.html::headerPart"/>
+   <script type="application/javascript" th:src="@{/js/commonCreazioneCondizioni.js}" charset="utf-8" defer></script>
+   <script type="application/javascript" th:src="@{/js/creazioneInterfaccia.js}" charset="utf-8" defer></script>
    <!-- sezione alert  -->
    <div  class="alert alert-success text-center" role="alert" th:if="${confermaFunzionalitaAbilitazione}" th:text="#{conferma.funzionalita.abilitazione.alert}"/>
    <div  class="alert alert-success text-center" role="alert" th:if="${confermaFunzionalitaDisabilitazione}" th:text="#{conferma.funzionalita.disabilitazione.alert}"/>
@@ -13,7 +15,7 @@
             	<div class="menu-list-elements col-md-2">
           	  		<div class="list-group">
           	  			<div class="crea-button">
-            	        	<a class="list-group-item list-group-item-action active" th:text="#{crudinterfaccia.form.nuovainterfaccia.button}" th:href="@{/funzionalita/visualizza(idInterfaccia=${form.idInterfaccia})}"/>
+            	        	<a class="list-group-item list-group-item-action active" th:text="#{crudinterfaccia.form.nuovafunzionalita.button}" th:href="@{/funzionalita/visualizza(idInterfaccia=${form.idInterfaccia})}"/>
             	   		</div>
       	             		 <a th:each="element : ${funzionalitaList}" th:class="${#strings.equals(element.id,form.id)} ? 'list-group-item list-group-item-action selected' :'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/funzionalita/visualizza(idInterfaccia=${element.interfaccia.id},idSelected=${element.id})}"/>
      	    		</div>

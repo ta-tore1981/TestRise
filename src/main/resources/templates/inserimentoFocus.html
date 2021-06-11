@@ -3,6 +3,7 @@
 		<head th:insert="generalTemplate.html::headPart"/>
 	<body>
    		<header th:insert="generalTemplate.html::headerPart"/>
+   		<script type="application/javascript" th:src="@{/js/commonCreazioneCondizioni.js}" charset="utf-8" defer></script>
         <div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceFocusDuplicato}" th:text="#{duplicato.focus.nomecodice.validation}"/>
    		<div class="container-fluid">
         	<div class="row">

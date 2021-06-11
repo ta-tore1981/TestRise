@@ -19,9 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intesigroup.testcasefactory.domain.Attore;
 import com.intesigroup.testcasefactory.domain.Progetto;
-import com.intesigroup.testcasefactory.entityView.AttoreViewCRUDForm;
-import com.intesigroup.testcasefactory.entityView.InterfacciaViewCRUDForm;
-import com.intesigroup.testcasefactory.entityView.ProgettoViewCRUDForm;
+import com.intesigroup.testcasefactory.form.AttoreViewCRUDForm;
+import com.intesigroup.testcasefactory.form.InterfacciaViewCRUDForm;
+import com.intesigroup.testcasefactory.form.ProgettoViewCRUDForm;
 import com.intesigroup.testcasefactory.service.AttoreService;
 import com.intesigroup.testcasefactory.service.ProgettoService;
 
@@ -38,9 +38,9 @@ public class ProgettoController {
 	@PostMapping("/progetto/formProgetto")
 	public String insProgetti(@ModelAttribute ProgettoViewCRUDForm form,String action,RedirectAttributes redirAttrs,  Model model) {
 		Progetto progetto= new Progetto();
-		this.validationFormProgetto(redirAttrs, form);
 		if (action.equals("Inserisci")){
 			//verifica dei dati per la creazione del progetto
+			this.validationFormProgetto(redirAttrs, form);
 			// creazione progetto
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				progetto.setId(0);
@@ -52,7 +52,7 @@ public class ProgettoController {
 			}
 		}
 		if (action.equals("Modifica")){
-			if (!redirAttrs.getFlashAttributes().containsKey("nomeIProgettoVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceProgettoVuoto")) {
+			if (!redirAttrs.getFlashAttributes().containsKey("nomeProgettoVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceProgettoVuoto")) {
 				redirAttrs.getFlashAttributes().remove("nomeCodiceProgettoDuplicato");
 				progetto= progettoService.getProgetto(form.getId()).orElse(null);
 				progetto.setDescrizione(form.getDescrizione());
@@ -90,8 +90,8 @@ public class ProgettoController {
 	@PostMapping("/attore/formAttore")
 	public String formAttore(@ModelAttribute AttoreViewCRUDForm form, String action, RedirectAttributes redirAttrs ) {
 		Attore attore = new Attore();
-		this.validationFormAttore(redirAttrs, form);
 		if (action.equals("Inserisci")) {
+			this.validationFormAttore(redirAttrs, form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				attore.setId(0);
 				attore.setDescrizione(form.getDescrizione());
@@ -103,8 +103,9 @@ public class ProgettoController {
 			return("redirect:/progetto/visualizza?idSelected="+form.getIdProgetto());
 		}
 		else if (action.equals("Modifica")){
+			this.validationFormAttore(redirAttrs, form);
 			if (!redirAttrs.getFlashAttributes().containsKey("nomeAttoreVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceAttoreVuoto")) {
-				redirAttrs.getFlashAttributes().remove("nomeAttoreFocusDuplicato");
+				redirAttrs.getFlashAttributes().remove("nomeCodiceAttoreDuplicato");
 				attore = attoreService.getAttore(form.getId()).orElse(null);
 				attore.setDescrizione(form.getDescrizione());
 				attore.setCodice(form.getCodice());		

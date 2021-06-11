@@ -1,4 +1,4 @@
-package com.intesigroup.testcasefactory.entityView;
+package com.intesigroup.testcasefactory.form;
 
 public class ProgettoViewCRUDForm {
 	Long id;

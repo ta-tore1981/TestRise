@@ -20,9 +20,9 @@ import com.intesigroup.testcasefactory.domain.Attore;
 import com.intesigroup.testcasefactory.domain.Funzionalita;
 import com.intesigroup.testcasefactory.domain.Interfaccia;
 import com.intesigroup.testcasefactory.domain.Progetto;
-import com.intesigroup.testcasefactory.entityView.AttoreViewCRUDForm;
-import com.intesigroup.testcasefactory.entityView.FunzionalitaViewCRUDForm;
-import com.intesigroup.testcasefactory.entityView.InterfacciaViewCRUDForm;
+import com.intesigroup.testcasefactory.form.AttoreViewCRUDForm;
+import com.intesigroup.testcasefactory.form.FunzionalitaViewCRUDForm;
+import com.intesigroup.testcasefactory.form.InterfacciaViewCRUDForm;
 import com.intesigroup.testcasefactory.service.AttoreService;
 import com.intesigroup.testcasefactory.service.InterfacciaService;
 import com.intesigroup.testcasefactory.service.ProgettoService;
@@ -42,19 +42,8 @@ public class InterfacciaController {
 	@PostMapping("/interfaccia/formInterfaccia")
 	public String insInterfaccia(@ModelAttribute InterfacciaViewCRUDForm form,String action, RedirectAttributes redirAttrs, Model model) {
 		Interfaccia interfaccia= new Interfaccia();
-		this.validationParam(redirAttrs,form);
-		if (action.equals("Cancella")){
-			interfacciaService.deleteById(form.getId());
-			return("redirect:/interfaccia/visualizza?idProgetto="+form.getIdProgetto());
-		}
-		if (action.equals("Funzionalita")) {
-			return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getId());
-		}
-		if (action.equals("Progetto")) {
-			return("redirect:/progetto/visualizza?idProgetto="+form.getIdProgetto());
-		}
-		
 		if (action.equals("Inserisci")){
+			this.validationParam(redirAttrs,form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				interfaccia.setId(0);
 				interfaccia.setProgetto(progettoService.getProgetto(form.getIdProgetto()).orElse(null));
@@ -66,6 +55,7 @@ public class InterfacciaController {
 			return("redirect:/interfaccia/visualizza?idProgetto="+form.getIdProgetto());
 		}
 		if (action.equals("Modifica")){
+			this.validationParam(redirAttrs,form);
 			if (!redirAttrs.getFlashAttributes().containsKey("nomeInterfacciaVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceInterfacciaVuoto")) {
 				redirAttrs.getFlashAttributes().remove("nomeCodiceInterfacciaDuplicato");
 				interfaccia= interfacciaService.getInterfaccia(form.getId()).orElse(null);
@@ -75,6 +65,16 @@ public class InterfacciaController {
 				interfacciaService.save(interfaccia);
 			}
 			return("redirect:/interfaccia/visualizza?idSelected="+form.getId()+"&idProgetto="+form.getIdProgetto());
+		}
+		if (action.equals("Cancella")){
+			interfacciaService.deleteById(form.getId());
+			return("redirect:/interfaccia/visualizza?idProgetto="+form.getIdProgetto());
+		}
+		if (action.equals("Funzionalita")) {
+			return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getId());
+		}
+		if (action.equals("Progetto")) {
+			return("redirect:/progetto/visualizza?idProgetto="+form.getIdProgetto());
 		}
 		return("redirect:interfaccia/visualizza?idProgetto="+form.getIdProgetto());
 	}

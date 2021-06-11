@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 		<head th:insert="generalTemplate.html::headPart"/>
+		<script type="application/javascript" th:src="@{/js/commonCreazioneCondizioni.js}" charset="utf-8" defer></script>
 	<body>
 		<header th:insert="generalTemplate.html::headerPart"/>
 		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceProgettoDuplicato}" th:text="#{duplicato.progetto.nomecodice.validation}"/>

@@ -10,7 +10,7 @@ import com.intesigroup.testcasefactory.domain.Attore;
 @Service
 public interface AttoreService {
 	public List<Attore> findAll();
-	public void save(Attore attore);
+	public Attore save(Attore attore);
 	public void deleteById(long id);
 	public Optional<Attore> getAttore(long id);
 	public List<Attore> findByProgettoId(long id);

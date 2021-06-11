@@ -1,18 +1,19 @@
 package com.intesigroup.testcasefactory.repository;
 
-import java.util.List;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import com.intesigroup.testcasefactory.domain.Focus;
+import com.intesigroup.testcasefactory.domain.TestCase;
 
 @Repository
-public interface FocusRepository extends JpaRepository<Focus,Long>{
+public interface TestCaseRepository extends JpaRepository<TestCase,Long>{
 	@Modifying
-	@Query("DELETE FROM Focus i WHERE i.id=?1")
+	@Query("DELETE FROM TestCase i WHERE i.id=?1")
 	public void deleteById(long id);
-	public List<Focus> findByFunzionalitaId(long id);
 
+	public Long countByProgettoId(Long progettoId);
+	
 }

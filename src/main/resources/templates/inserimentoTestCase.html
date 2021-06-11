@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head th:insert="generalTemplate.html::headPart" />
+<body>
+	<header th:insert="generalTemplate.html::headerPart" />
+	<script type="application/javascript"
+		th:src="@{/js/creazioneTestCase.js}" charset="utf-8" defer></script>
+	<div class="container-fluid background-color">
+	<div  class="alert alert-danger text-center" th:role="alert" th:if="${testCaseInesistente}" th:text="#{idTestCaseEsistente.testCase.idTestCase.validation}"/>
+	<div  class="alert alert-danger text-center" th:role="alert" th:if="${progettoInesistente}" th:text="#{progettoEsistente.testCase.idProgetto.validation}"/>
+	<div  class="alert alert-danger text-center" th:role="alert" th:if="${InterfacciaInesistente}" th:text="#{progettoEsistente.testCase.idInterfaccia.validation}"/>
+	<div  class="alert alert-danger text-center" th:role="alert" th:if="${funzionalitaInesistente}" th:text="#{funzionalitaEsistente.testCase.idFunzionalita.validation}"/>
+	<div  class="alert alert-danger text-center" th:role="alert" th:if="${focusInesistente}" th:text="#{focusEsistente.testCase.idFocus.validation}"/>
+	<div  class="alert alert-danger text-center" th:role="alert" th:if="${tipoTestInesistente}" th:text="#{tipoTestEsistente.testCase.idTipoTest.validation}"/>
+	<div  class="alert alert-danger text-center" th:role="alert" th:if="${approccioInesistente}" th:text="#{approccioEsistente.testCase.idApproccio.validation}"/>
+		<div class="row">
+			<div class="col-lg-12  fw-bolder fs-4">
+				<h1 th:text="#{creazioneTestCase.testcase.testplan.label}">TEST PLAN</h1>
+			</div>
+		</div>
+		<!-- form per la modifica della condizione progetto, interfaccia, funzionalita -->
+		<form th:action="@{/testCase/visualizza}" method="get" id="formCambioCondizione">
+			<input type="hidden" th:value="${idTestCase}" name="idTestCase">
+			<input type="hidden" th:value="${numTest}" name="numTest">
+			<div class="row mb-4">
+				<div class="col-sm-2">
+					<label for="nomeProgetto" class=" col-form-label fs-4" th:text="#{creazioneTestCase.testcase.nomeProgetto.label}">Nome
+						Progetto</label>
+				</div>
+				<div class="col-sm-2 fs-4">
+					<select class="form-select" id="idProgetto" name="idProgetto">
+						<option value="0" th:text="#{creazioneTestCase.testcase.nomeProgetto.placeholder}">-- Seleziona --</option>
+						<option th:each="progetto : ${progettoList}"
+							th:value=${progetto.id} th:text="${progetto.nome}"
+							th:selected="${progetto.id==idProgetto}">
+					</select>
+				</div>
+				<p th:if="${progettoVuoto}" th:text="#{notnull.testCase.progetto.validation}" th:class="${progettoVuoto} ? 'alert-danger'"></p>
+				<div class="col-sm-1">
+					<label for="testid" class="col-form-label fs-4">TestID</label>
+				</div>
+				<div class="col-sm-7 fs-4">
+					<input type="text" class="form-control fs-5" name="testId"
+						placeholder="*auto*" th:value="${testId}" readonly>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12  fw-bolder fs-4">
+					<h2 th:text="#{creazioneTestCase.testcase.testdesign.label}">TEST DESIGN</h2>
+				</div>
+			</div>
+
+			<div class="row">
+				<label for="componente" class="col-sm-2 col-form-label fs-4" th:text="#{creazioneTestCase.testcase.componente.label}">Componente</label>
+				<div class="col-lg-5 fs-4">
+					<input type="text" class="col-sm-12 col-form-label fs-5"
+						placeholder="*auto*" disabled>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-2 col-form-label fs-4" th:text="#{creazioneTestCase.testcase.tipologiatest.label}">Tipologia Test</div>
+				<div class="col-sm-2 col-form-label fs-4">
+					<select class="form-select" id="selectTipologia" name="idTipoTest">
+						<option value=0 th:text="#{creazioneTestCase.testcase.componente.placeholder}">-- Seleziona --</option>
+						<option th:each="tipoTest : ${tipoTestList}"
+							th:value=${tipoTest.id} th:text="${tipoTest.nome}"
+							th:selected="${tipoTest.id==idTipoTest}">
+					</select>
+				</div>
+				<p th:if="${tipoTestVuoto}" th:text="#{notnull.testCase.tipoTest.validation}" th:class="${tipoTestVuoto} ? 'alert-danger'"></p>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col-sm-2 col-form-label fs-4" th:text="#{creazioneTestCase.testcase.approccio.label}">Approccio</div>
+				<div class="col-sm-2 col-form-label fs-4">
+					<select class="form-select" id="selectTipologia" name="idApproccio">
+						<option selected value=0 th:text=#{creazioneTestCase.testcase.approccio.placeholder}>-- Seleziona --</option>
+						<option th:each="approccio : ${approccioList}"
+							th:value=${approccio.id} th:text="${approccio.nome}"
+							th:selected="${approccio.id==idApproccio}">
+					</select>
+				</div>
+				<p th:if="${approccioVuoto}" th:text="#{notnull.testCase.approccio.validation}" th:class="${approccioVuoto} ? 'alert-danger'"></p>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12  fw-bolder fs-4">
+					<h2 th:text="#{creazioneTestCase.testcase.condizioni.label}">CONDIZIONI</h2>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2 col-form-label fs-4" th:text="#{creazioneTestCase.testcase.interfaccia.label}">Interfaccia</div>
+				<div class="col-sm-2 col-form-label fs-4">
+					<select class="form-select" id="idInterfaccia" name="idInterfaccia">
+						<option selected value=0 th:text="#{creazioneTestCase.testcase.interfaccia.placeholder}">-- Seleziona --</option>
+						<option th:each="interfaccia : ${interfacciaList}"
+							th:value=${interfaccia.id} th:text="${interfaccia.nome}"
+							th:selected="${interfaccia.id==idInterfaccia}">
+					</select>
+				</div>
+				<p th:if="${interfacciaVuoto}" th:text="#{notnull.testCase.interfaccia.validation}" th:class="${interfacciaVuoto} ? 'alert-danger'"></p>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2 col-form-label fs-4" th:text=#{creazioneTestCase.testcase.operatore.label}>Operatore</div>
+				<div class="col-sm-2 col-form-label fs-4">
+					<select class="form-select" id="idAttore" name="idAttore">
+						<option value=0 selected th:text=#{creazioneTestCase.testcase.operatore.placeholder}>-- Seleziona --</option>
+						<option th:each="attore : ${attoreList}" th:value=${attore.id}
+							th:text="${attore.nome}" th:selected="${attore.id==idAttore}">
+					</select>
+				</div>
+				<p th:if="${attoreVuoto}" th:text="#{notnull.testCase.attore.validation}" th:class="${attoreVuoto} ? 'alert-danger'"></p>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2 col-form-label fs-4" th:text="#{creazioneTestCase.testcase.funzionalita.label}">Funzionalità</div>
+				<div class="col-sm-2 col-form-label fs-4">
+					<select class="form-select" id="idFunzionalita"
+						name="idFunzionalita">
+						<option selected value=0 th:text="#{creazioneTestCase.testcase.funzionalita.placeholder}">-- Seleziona --</option>
+						<option th:each="funzionalita : ${funzionalitaList}"
+							th:value=${funzionalita.id} th:text="${funzionalita.nome}"
+							th:selected="${funzionalita.id==idFunzionalita}">
+					</select>
+				</div>
+				<p th:if="${funzionalitaVuoto}" th:text="#{notnull.testCase.funzionalita.validation}" th:class="${funzionalitaVuoto} ? 'alert-danger'"></p>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col-sm-2 col-form-label fs-4" th:text="#{creazioneTestCase.testcase.focus.label}">Focus</div>
+				<div class="col-sm-2 col-form-label fs-4">
+					<select class="form-select" id="idFocus" name="idFocus">
+						<option selected value=0 th:text="#{creazioneTestCase.testcase.focus.placeholder}">-- Seleziona --</option>
+						<option th:each="focus : ${focusList}" th:value=${focus.id}
+							th:text="${focus.nome}" th:selected="${focus.id==idFocus}">
+					</select>
+				</div>
+				<p th:if="${focusVuoto}" th:text="#{notnull.testCase.focus.validation}" th:class="${focusVuoto} ? 'alert-danger'"></p>
+			</div>
+			<div class="row">
+				<div class="col-lg-12  fw-bolder fs-4">
+					<h2 th:text="#{creazioneTestCase.testcase.usecase.label}">USE CASE</h2>
+				</div>
+			</div>
+
+			<div class="col-sm-12 col-form-label fs-4 mb-2">
+				<textarea class="col-sm-12 col-form-label fs-4"
+					th:placeholder="#{creazioneTestCase.testcase.usecase.placeholder}"style="height: 130px; resize: none;" name="useCase"
+					th:text="${useCase}"></textarea>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2 col-form-label fs-4" th:text="#{creazioneTestCase.testcase.proceduraditest.label}">Procedura di test</div>
+			</div>
+
+			<div class="col-sm-12 col-form-label fs-4 mb-4">
+				<textarea class="col-sm-12 col-form-label fs-4"
+					th:placeholder="#{creazioneTestCase.testcase.proceduraditest.placeholder}"
+					style="height: 130px; resize: none;"
+					th:text="${proceduraTest}" name="proceduraTest"></textarea>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-11  fw-bolder fs-4">
+					<h2 th:text="#{creazioneTestCase.testcase.controllodaeffettuare.label}">CONTROLLO DA EFFETTUARE</h2>
+				</div>
+				<div class="col-sm-1 fw-bolder fs-4 text-right">
+					<h4 th:text="#{creazioneTestCase.testcase.installationtest.label}">Installation Test</h4>
+				</div>
+			</div>
+			<!-- controllo  interfaccia  -->
+			<div class="row mb-4">
+				<div class="col-sm-2">
+					<label th:for="controlloInterfaccia" th:text="#{creazioneTestCase.testcase.controllointerfaccia.label}"class="fs-4">Interfaccia</label>
+				</div>
+				<div class="col-sm-9 fs-4">
+					<input type="text" class="form-control fs-5" th:placeholder="#{creazioneTestCase.testcase.controllointerfaccia.placeholder}"
+						id="controlloInterfaccia"
+						th:value="${controlloInterfaccia}" name="controlloInterfaccia"/>
+				</div>
+				<div class="col-sm-1 fs-4 text-right">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox"
+							th:checked="${installationInterfaccia}" name="installationInterfaccia"/>
+					</div>
+				</div>
+			</div>
+			<!-- controllo  log  -->
+			<div class="row mb-4">
+				<div class="col-sm-2">
+					<label th:for="controlloLog" class=" fs-4" th:text="#{creazioneTestCase.testcase.controllolog.label}">Log</label>
+				</div>
+				<div class="col-sm-9 fs-4">
+					<input type="text" class="form-control fs-5" th:placeholder="#{creazioneTestCase.testcase.controllolog.placeholder}"
+						id="controlloLog" th:value="${controlloLog}" name="controlloLog"/>
+				</div>
+				<div class="col-sm-1 fs-4 text-right">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox"
+							th:checked="${installationLog}" name="installationLog"/>
+					</div>
+				</div>
+			</div>
+			<!-- controllo  database  -->
+			<div class="row mb-4">
+				<div class="col-sm-2">
+					<label th:for="controlloDatabase" class="fs-4" th:text="#{creazioneTestCase.testcase.controllodatabase.label}">Database</label>
+				</div>
+				<div class="col-sm-9 fs-4">
+					<input type="text" class="form-control fs-5" th:placeholder="#{creazioneTestCase.testcase.controllodatabase.placeholder}"
+						id="controlloDatabase" th:value="${controlloDatabase}" name="controlloDatabase"/>
+				</div>
+				<div class="col-sm-1 fs-4 text-right">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox"
+							th:checked="${installationDatabase}"  name="installationDatabase"/>
+					</div>
+				</div>
+			</div>
+			<!-- controllo  performance  -->
+			<div class="row mb-4">
+				<div class="col-sm-2">
+					<label th:for="controlloPerformance" class="fs-4" th:text="#{creazioneTestCase.testcase.controlloperformance.label}">Performance</label>
+				</div>
+				<div class="col-sm-9 fs-4">
+					<input type="text" class="form-control fs-5" th:placeholder="#{creazioneTestCase.testcase.controlloperformance.placeholder}"
+						id="controlloPerformance"
+						th:value="${controlloPerformance}" name="controlloPerformance"/>
+				</div>
+				<div class="col-sm-1 fs-4 text-right">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox"
+							th:checked="${installationPerformance}"  name="installationPerformance" />
+					</div>
+				</div>
+			</div>
+			<!-- controllo  storage  -->
+			<div class="row mb-4">
+				<div class="col-sm-2">
+					<label th:for="controlloStorage" class="fs-4" th:text="#{creazioneTestCase.testcase.controllostorage.label}">Storage</label>
+				</div>
+				<div class="col-sm-9 fs-4">
+					<input type="text" class="form-control fs-5" th:placeholder="#{creazioneTestCase.testcase.controllostorage.placeholder}"
+						id="controlloStorage" th:value="${controlloStorage}" name="controlloStorage"/>
+				</div>
+				<div class="col-sm-1 fs-4 text-right">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox"
+							th:checked="${installationStorage}" name="installationStorage" />
+					</div>
+				</div>
+			</div>
+			<!-- controllo  altro  -->
+			<div class="row mb-4">
+				<div class="col-sm-2">
+					<label th:for="controlloAltro" class="fs-4" th:text="#{creazioneTestCase.testcase.controlloaltro.label}">Altro</label>
+				</div>
+				<div class="col-sm-9 fs-4">
+					<input type="text" class="form-control fs-5" th:placeholder="#{creazioneTestCase.testcase.controlloaltro.placeholder}"
+						id="controlloAltro" th:value="${controlloAltro}" name="controlloAltro"/>
+				</div>
+				<div class="col-sm-1 fs-4">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox"
+							th:checked="${installationAltro}"  name="installationAltro"/>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-4">	
+				<p>
+					<a class="btn btn-primary" href="/testCase/visualizza" role="button" name="action" th:value="Nuovo" th:text="#{creazioneTestCase.testcase.nuovo.button}">Crea</a> 
+					<button class="btn btn-primary" th:text="#{creazioneTestCase.testcase.crea.button}" formmethod="post" formaction="/testCase/formAggiorna" type="submit" name="action" value="crea" form="formCambioCondizione">Crea</button> 
+					<button th:disabled="${idTestCase==null}" th:text="#{creazioneTestCase.testcase.modifica.button}" class="btn btn-primary" formmethod="post" formaction="/testCase/formAggiorna" type="submit" name="action" value="modifica" form="formCambioCondizione">Modifica</button> 
+					<a class="btn btn-primary" href="/testCase/ricerca" role="button" th:text="#{creazioneTestCase.testcase.ricerca.button}">Crea</a> 
+				</p>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

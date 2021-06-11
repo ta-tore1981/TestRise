@@ -19,9 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.intesigroup.testcasefactory.domain.Attore;
 import com.intesigroup.testcasefactory.domain.Funzionalita;
 import com.intesigroup.testcasefactory.domain.Interfaccia;
-import com.intesigroup.testcasefactory.entityView.AbilitazioneAttoreViewCRUDForm;
-import com.intesigroup.testcasefactory.entityView.AttoreViewCRUDForm;
-import com.intesigroup.testcasefactory.entityView.FunzionalitaViewCRUDForm;
+import com.intesigroup.testcasefactory.form.AbilitazioneAttoreViewCRUDForm;
+import com.intesigroup.testcasefactory.form.AttoreViewCRUDForm;
+import com.intesigroup.testcasefactory.form.FunzionalitaViewCRUDForm;
 import com.intesigroup.testcasefactory.service.AttoreService;
 import com.intesigroup.testcasefactory.service.FunzionalitaService;
 import com.intesigroup.testcasefactory.service.InterfacciaService;
@@ -40,8 +40,8 @@ public class FunzionalitaController {
 	@PostMapping("/funzionalita/formFunzionalita")
 	public String insFunzionalita(@ModelAttribute FunzionalitaViewCRUDForm form,String action,RedirectAttributes redirAttrs, Model model) {
 		Funzionalita funzionalita= new Funzionalita();
-		this.validationFormInterfaccia(redirAttrs,form);
 		if (action.equals("Inserisci")){
+			this.validationFormInterfaccia(redirAttrs,form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				funzionalita.setId(0);
 				funzionalita.setInterfaccia(interfacciaService.getInterfaccia(form.getIdInterfaccia()).orElse(null));
@@ -54,6 +54,7 @@ public class FunzionalitaController {
 			return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getIdInterfaccia());
 		}
 		if (action.equals("Modifica")){
+			this.validationFormInterfaccia(redirAttrs,form);
 			if (!redirAttrs.getFlashAttributes().containsKey("nomeFunzionalitaVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceFunzionalitaVuoto"))  {
 				redirAttrs.getFlashAttributes().remove("nomeCodiceFunzionalitaDuplicato");
 				funzionalita= funzionalitaService.getFunzionalita(form.getId()).orElse(null);
