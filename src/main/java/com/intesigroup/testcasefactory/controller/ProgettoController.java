@@ -47,7 +47,8 @@ public class ProgettoController {
 				progetto.setDescrizione(form.getDescrizione().trim());
 				progetto.setCodice(form.getCodice().trim());		
 				progetto.setNome(form.getNome().trim());
-				progettoService.save(progetto);		
+				progetto=progettoService.save(progetto);	
+				redirAttrs.addAttribute("idSelected",progetto.getId());
 				return("redirect:/progetto/visualizza");	
 			}
 		}

@@ -9,6 +9,14 @@
 		<div  class="alert alert-success text-center" role="alert" th:if="${confermaInterfacciaAbilitazione}" th:text="#{conferma.interfaccia.abilitazione.alert}"/>
 		<div  class="alert alert-success text-center" role="alert" th:if="${confermaInterfacciaDisabilitazione}" th:text="#{conferma.interfaccia.disabilitazione.alert}"/>
 		<div class="container-fluid">
+		<nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+  		<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  			<ol class="breadcrumb">
+    			<li class="breadcrumb-item"><a th:href="@{/progetto/visualizza(idSelected=${form.idProgetto})}" th:text="${form.nomeProgetto}">nomeProgetto</a></li>
+    			<li class="breadcrumb-item active" aria-current="page" th:text="${form.nome}">Library</li>
+  			</ol>
+		</nav>
+		
 		<!-- menu interfacce -->
         	<div class="row">
             	<div class="menu-list-elements col-md-2">

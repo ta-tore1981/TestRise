@@ -20,8 +20,8 @@ public class InterfacciaServiceImpl implements InterfacciaService{
 	InterfacciaRepository interfacciaRepository;
 
 	@Override
-	public void save(Interfaccia interfaccia) {
-		interfacciaRepository.saveAndFlush(interfaccia);
+	public Interfaccia save(Interfaccia interfaccia) {
+		return interfacciaRepository.saveAndFlush(interfaccia);
 		
 	}
 	@Override

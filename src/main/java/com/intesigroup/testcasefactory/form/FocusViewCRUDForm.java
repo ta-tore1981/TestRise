@@ -5,9 +5,12 @@ public class FocusViewCRUDForm {
 	String nome;
 	String descrizione;
 	Long idFunzionalita;
+	Long idInterfaccia;
+	Long idProgetto;
 	String codice;
-	
-	
+	String nomeProgetto;
+	String nomeInterfaccia;
+	String nomeFunzionalita;
 	public FocusViewCRUDForm() {
 		id=null;
 		idFunzionalita=null;
@@ -65,5 +68,56 @@ public class FocusViewCRUDForm {
 	public void setCodice(String codice) {
 		this.codice = codice;
 	}
+
+
+	public Long getIdInterfaccia() {
+		return idInterfaccia;
+	}
+
+
+	public void setIdInterfaccia(Long idInterfaccia) {
+		this.idInterfaccia = idInterfaccia;
+	}
+
+
+	public Long getIdProgetto() {
+		return idProgetto;
+	}
+
+
+	public void setIdProgetto(Long idProgetto) {
+		this.idProgetto = idProgetto;
+	}
+
+
+	public String getNomeProgetto() {
+		return nomeProgetto;
+	}
+
+
+	public void setNomeProgetto(String nomeProgetto) {
+		this.nomeProgetto = nomeProgetto;
+	}
+
+
+	public String getNomeInterfaccia() {
+		return nomeInterfaccia;
+	}
+
+
+	public void setNomeInterfaccia(String nomeInterfaccia) {
+		this.nomeInterfaccia = nomeInterfaccia;
+	}
+
+
+	public String getNomeFunzionalita() {
+		return nomeFunzionalita;
+	}
+
+
+	public void setNomeFunzionalita(String nomeFunzionalita) {
+		this.nomeFunzionalita = nomeFunzionalita;
+	}
+	
 	
 }

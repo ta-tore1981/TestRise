@@ -48,8 +48,9 @@ public class FunzionalitaController {
 				funzionalita.setDescrizione(form.getDescrizione());
 				funzionalita.setCodice(form.getCodice());		
 				funzionalita.setNome(form.getNome());
-				funzionalitaService.save(funzionalita);
-				
+				funzionalita=funzionalitaService.save(funzionalita);	
+				redirAttrs.addAttribute("idSelected",funzionalita.getId()); 
+				redirAttrs.addAttribute("idInterfaccia",funzionalita.getInterfaccia().getId());
 			}
 			return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getIdInterfaccia());
 		}
@@ -123,6 +124,9 @@ public class FunzionalitaController {
 		//dichiaro il form delle abilitazioni delle funzionalita per ogni attore
 		List<AbilitazioneAttoreViewCRUDForm> abilitazioneList= new ArrayList<AbilitazioneAttoreViewCRUDForm>();
 		if (interfaccia!=null) {
+			form.setNomeInterfaccia(interfaccia.getNome());
+			form.setNomeProgetto(interfaccia.getProgetto().getNome());
+			form.setIdProgetto(interfaccia.getProgetto().getId());
 			funzionalitaList = new ArrayList<Funzionalita>(interfaccia.getFunzionalita());
 			funzionalitaList.sort(Comparator.comparing(Funzionalita::getId));
 			//valorizzo i valori di output con la lista delle interfacce

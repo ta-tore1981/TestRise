@@ -7,6 +7,11 @@
 		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceProgettoDuplicato}" th:text="#{duplicato.progetto.nomecodice.validation}"/>
 		<div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceAttoreDuplicato}" th:text="#{duplicato.attore.nomecodice.validation}"/>
 		<div class="container-fluid">
+  		<nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+ 			<ol class="breadcrumb">
+   			<li class="breadcrumb-item active" aria-current="page" th:text="${form.nome}">Library</li>
+ 			</ol>
+ 		</nav>
         	<div class="row">
         	<!--  Menu dei progetti -->
             	<div class="menu-list-elements col-md-2">

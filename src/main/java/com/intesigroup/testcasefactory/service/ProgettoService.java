@@ -9,7 +9,7 @@ import com.intesigroup.testcasefactory.domain.Progetto;
 @Service
 public interface ProgettoService {
 	public List<Progetto> findAll();
-	public void save(Progetto progetto);
+	public Progetto save(Progetto progetto);
 	public Optional<Progetto> getProgetto(long id);
 	public void delete(long id);
 }

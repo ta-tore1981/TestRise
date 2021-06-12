@@ -19,8 +19,8 @@ public class FocusServiceImpl implements FocusService{
 	FocusRepository focusRepository;
 
 	@Override
-	public void save(Focus focus) {
-		focusRepository.save(focus);
+	public Focus save(Focus focus) {
+		return focusRepository.save(focus);
 		
 	}
 

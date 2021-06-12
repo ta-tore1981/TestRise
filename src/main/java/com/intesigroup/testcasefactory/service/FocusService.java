@@ -7,7 +7,7 @@ import com.intesigroup.testcasefactory.domain.Focus;
 
 @Service
 public interface FocusService {
-	public void save(Focus focus);
+	public Focus save(Focus focus);
 	public List<Focus> findAll();
 	public Optional<Focus> getFocus(long id);
 	public void deleteById(long id);

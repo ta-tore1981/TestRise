@@ -43,9 +43,17 @@ public class FocusController {
 				focus.setDescrizione(form.getDescrizione());
 				focus.setCodice(form.getCodice());		
 				focus.setNome(form.getNome());
-				focusService.save(focus);
+				focus=focusService.save(focus);
+				redirAttrs.addAttribute("idSelected",focus.getId()); 
+				redirAttrs.addAttribute("idFunzionalita",focus.getFunzionalita().getId());
+				return "redirect:/focus/visualizza";
 			}
-			return("redirect:/focus/visualizza?idFunzionalita="+form.getIdFunzionalita());
+			else {
+				redirAttrs.addAttribute("idSelected",form.getId()); 
+				redirAttrs.addAttribute("idFunzionalita",form.getIdFunzionalita());
+				return "redirect:/focus/visualizza";
+				
+			}
 		}
 		if (action.equals("Modifica")){
 			this.validationParam(redirAttrs, form);
@@ -93,7 +101,11 @@ public class FocusController {
 		List<Focus> focusList;
 		Funzionalita funzionalita = funzionalitaService.getFunzionalita(idFunzionalita).orElse(null);
 		if (funzionalita!=null) {
-			form.setId(idFunzionalita);
+			form.setIdInterfaccia(funzionalita.getInterfaccia().getId());
+			form.setNomeInterfaccia(funzionalita.getInterfaccia().getNome());
+			form.setNomeFunzionalita(funzionalita.getNome());
+			form.setIdProgetto(funzionalita.getInterfaccia().getProgetto().getId());
+			form.setNomeProgetto(funzionalita.getInterfaccia().getProgetto().getNome());
 			focusList = new ArrayList<Focus>(funzionalita.getFocus());
 			focusList.sort(Comparator.comparing(Focus::getId));
 			//valorizzo i valori di output con la lista delle interfacce

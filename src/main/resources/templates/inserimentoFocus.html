@@ -6,18 +6,27 @@
    		<script type="application/javascript" th:src="@{/js/commonCreazioneCondizioni.js}" charset="utf-8" defer></script>
         <div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceFocusDuplicato}" th:text="#{duplicato.focus.nomecodice.validation}"/>
    		<div class="container-fluid">
+   			<nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+  			<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  				<ol class="breadcrumb">
+    				<li class="breadcrumb-item"><a th:href="@{/progetto/visualizza(idSelected=${form.idProgetto})}" th:text="${form.nomeProgetto}">nomeProgetto</a></li>
+    				<li class="breadcrumb-item"><a th:href="@{/interfaccia/visualizza(idSelected=${form.idInterfaccia},idProgetto=${form.idProgetto})}" th:text="${form.nomeInterfaccia}">nomeInterfaccia</a></li>
+    				<li class="breadcrumb-item"><a th:href="@{/funzionalita/visualizza(idSelected=${form.idFunzionalita},idInterfaccia=${form.idInterfaccia})}" th:text="${form.nomeFunzionalita}">nomeInterfaccia</a></li>
+    				<li class="breadcrumb-item active" aria-current="page" th:text="${form.nome}">Library</li>
+  				</ol>
+			</nav>
         	<div class="row">
             	<div class="menu-list-elements col-md-2">
           	  		<div class="list-group">
           	  			<div class="crea-button">
-            	        	<a class="list-group-item list-group-item-action active" th:text="#{crudfocus.form.titolo.label}" th:href="@{/focus/visualizza(idFunzionalita=${form.idFunzionalita})}"/>
+            	        	<a class="list-group-item list-group-item-action active" th:text="#{crudfocus.form.nuovofocus.button}" th:href="@{/focus/visualizza(idFunzionalita=${form.idFunzionalita})}"/>
             	   		</div>
       	             		<a th:each="element : ${focusList}" th:class="${#strings.equals(element.id,form.id)} ? 'list-group-item list-group-item-action selected' :'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/focus/visualizza(idFunzionalita=${form.idFunzionalita},idSelected=${element.id})}"/>
      	    		</div>
    		      	</div>
    		        <!--  form CRUD Focus -->
    		   		<div class="form-attr col-md-5">
-  		        	<h1>Gestione focus</h1>
+  		        	<h1 th:text="#{crudfocus.form.titolo.label}">Gestione focus</h1>
  	              	<h2 th:if= ${form.id} &le; 0 th:text="#{crudfocus.form.modifica.label}">Modifica</h2>
 				   	<h2 th:unless= ${form.id} &le; 0  th:text="#{crudfocus.form.inserisci.label}">Inserisci</h2>
 				   	

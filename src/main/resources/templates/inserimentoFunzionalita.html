@@ -11,6 +11,14 @@
    <div  class="alert alert-danger text-center" role="alert" th:if="${erroreAttoreFunzionalitaInesistente}" th:text="#{accessibilitafunzionalita.alert.attorefunzioneinesistente.validation}"/>
    <div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceFunzionalitaDuplicato}" th:text="#{duplicato.funzionalita.nomecodice.validation}"/>
    <div class="container-fluid">
+   <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+  		<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  			<ol class="breadcrumb">
+    			<li class="breadcrumb-item"><a th:href="@{/progetto/visualizza(idSelected=${form.idProgetto})}" th:text="${form.nomeProgetto}">nomeProgetto</a></li>
+    			<li class="breadcrumb-item"><a th:href="@{/interfaccia/visualizza(idSelected=${form.idInterfaccia},idProgetto=${form.idProgetto})}" th:text="${form.nomeInterfaccia}">nomeInterfaccia</a></li>
+    			<li class="breadcrumb-item active" aria-current="page" th:text="${form.nome}">Library</li>
+  			</ol>
+		</nav>
         	<div class="row">
             	<div class="menu-list-elements col-md-2">
           	  		<div class="list-group">

@@ -22,8 +22,8 @@ public class ProgettoServiceImpl implements ProgettoService{
 	public List<Progetto> findAll() {
 		return progettoRepository.findAll();
 	}
-	public void save(Progetto progetto) {
-		progettoRepository.saveAndFlush(progetto);
+	public Progetto save(Progetto progetto) {
+		return progettoRepository.saveAndFlush(progetto);
 	}
 	public Optional<Progetto> getProgetto(long id) {
 		return progettoRepository.findById(id);

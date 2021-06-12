@@ -50,7 +50,10 @@ public class InterfacciaController {
 				interfaccia.setDescrizione(form.getDescrizione());
 				interfaccia.setCodice(form.getCodice());		
 				interfaccia.setNome(form.getNome());
-				interfacciaService.save(interfaccia);
+				interfaccia=interfacciaService.save(interfaccia);	
+				redirAttrs.addAttribute("idSelected",interfaccia.getId()); 
+				redirAttrs.addAttribute("idProgetto",interfaccia.getProgetto().getId());
+				return("redirect:/interfaccia/visualizza");
 			}
 			return("redirect:/interfaccia/visualizza?idProgetto="+form.getIdProgetto());
 		}
@@ -125,6 +128,7 @@ public class InterfacciaController {
 		AttoreViewCRUDForm attoreForm = new AttoreViewCRUDForm();
 		Progetto progetto = progettoService.getProgetto(idProgetto).orElse(null);
 		if (progetto!=null) {
+			form.setNomeProgetto(progetto.getNome());
 			interfacciaList = new ArrayList<Interfaccia>(progetto.getInterfaccia());
 			interfacciaList.sort(Comparator.comparing(Interfaccia::getId));
 			attoreList= attoreService.findByProgettoId(idProgetto);

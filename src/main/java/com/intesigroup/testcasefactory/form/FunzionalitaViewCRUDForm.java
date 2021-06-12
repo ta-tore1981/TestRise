@@ -5,7 +5,10 @@ public class FunzionalitaViewCRUDForm {
 	String nome;
 	String descrizione;
 	Long idInterfaccia;
+	Long idProgetto;
 	String codice;
+	String nomeInterfaccia;
+	String nomeProgetto;
 	
 	public FunzionalitaViewCRUDForm() {
 		id=null;
@@ -53,6 +56,30 @@ public class FunzionalitaViewCRUDForm {
 
 	public void setCodice(String codice) {
 		this.codice = codice;
+	}
+
+	public String getNomeInterfaccia() {
+		return nomeInterfaccia;
+	}
+
+	public void setNomeInterfaccia(String nomeInterfaccia) {
+		this.nomeInterfaccia = nomeInterfaccia;
+	}
+
+	public String getNomeProgetto() {
+		return nomeProgetto;
+	}
+
+	public void setNomeProgetto(String nomeProgetto) {
+		this.nomeProgetto = nomeProgetto;
+	}
+
+	public Long getIdProgetto() {
+		return idProgetto;
+	}
+
+	public void setIdProgetto(Long idProgetto) {
+		this.idProgetto = idProgetto;
 	}
 	
 }

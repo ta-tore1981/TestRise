@@ -17,8 +17,8 @@ public class FunzionalitaServiceImpl implements FunzionalitaService{
 	FunzionalitaRepository funzionalitaService;
 	
 	@Override
-	public void save(Funzionalita funzionalita) {
-		funzionalitaService.save(funzionalita);
+	public Funzionalita save(Funzionalita funzionalita) {
+		return funzionalitaService.save(funzionalita);
 		
 	}
 

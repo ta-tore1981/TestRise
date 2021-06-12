@@ -6,6 +6,7 @@ public class InterfacciaViewCRUDForm {
 	String descrizione;
 	Long idProgetto;
 	String codice;
+	String nomeProgetto;
 
 	
 	public InterfacciaViewCRUDForm() {
@@ -65,5 +66,16 @@ public class InterfacciaViewCRUDForm {
 	public void setCodice(String codice) {
 		this.codice = codice;
 	}
+
+
+	public String getNomeProgetto() {
+		return nomeProgetto;
+	}
+
+
+	public void setNomeProgetto(String nomeProgetto) {
+		this.nomeProgetto = nomeProgetto;
+	}
+	
 	
 }

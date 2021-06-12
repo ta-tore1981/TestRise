@@ -10,7 +10,7 @@ import com.intesigroup.testcasefactory.domain.Progetto;
 
 @Service
 public interface InterfacciaService {
-	public void save(Interfaccia interfaccia);
+	public Interfaccia save(Interfaccia interfaccia);
 	public List<Interfaccia> findAll();
 	public Optional<Interfaccia> getInterfaccia(long id);
 	public void deleteById(long id);
