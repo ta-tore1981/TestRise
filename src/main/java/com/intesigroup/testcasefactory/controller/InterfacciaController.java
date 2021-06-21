@@ -59,7 +59,8 @@ public class InterfacciaController {
 		}
 		if (action.equals("Modifica")){
 			this.validationParam(redirAttrs,form);
-			if (!redirAttrs.getFlashAttributes().containsKey("nomeInterfacciaVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceInterfacciaVuoto")) {
+			//if (!redirAttrs.getFlashAttributes().containsKey("nomeInterfacciaVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceInterfacciaVuoto")) {
+			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				redirAttrs.getFlashAttributes().remove("nomeCodiceInterfacciaDuplicato");
 				interfaccia= interfacciaService.getInterfaccia(form.getId()).orElse(null);
 				interfaccia.setDescrizione(form.getDescrizione());
@@ -87,7 +88,9 @@ public class InterfacciaController {
 			redirAttrs.addFlashAttribute("nomeInterfacciaVuoto", "nomeInterfacciaVuoto");
 			redirAttrs.addFlashAttribute("error","true");
 		}
-		if (interfacciaService.findByProgettoId(form.getIdProgetto()).stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
+		List<Interfaccia> InterfacciaList = interfacciaService.findByProgettoId(form.getIdProgetto());
+		InterfacciaList.removeIf(i-> i.getId()==form.getId().longValue());
+		if (InterfacciaList.stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
 			redirAttrs.addFlashAttribute("nomeCodiceInterfacciaDuplicato", "nomeCodiceInterfacciaDuplicato");
 			redirAttrs.addFlashAttribute("error","true");
 		}

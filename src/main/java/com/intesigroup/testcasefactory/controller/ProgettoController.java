@@ -51,17 +51,28 @@ public class ProgettoController {
 				redirAttrs.addAttribute("idSelected",progetto.getId());
 				return("redirect:/progetto/visualizza");	
 			}
+			else {
+				redirAttrs.addAttribute("idSelected",form.getId());
+				return("redirect:/progetto/visualizza");	
+			}
 		}
 		if (action.equals("Modifica")){
-			if (!redirAttrs.getFlashAttributes().containsKey("nomeProgettoVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceProgettoVuoto")) {
+			this.validationFormProgetto(redirAttrs, form); 
+			//if (!redirAttrs.getFlashAttributes().containsKey("nomeProgettoVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceProgettoVuoto")) {
+		     if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				redirAttrs.getFlashAttributes().remove("nomeCodiceProgettoDuplicato");
 				progetto= progettoService.getProgetto(form.getId()).orElse(null);
 				progetto.setDescrizione(form.getDescrizione());
 				progetto.setCodice(form.getCodice());		
 				progetto.setNome(form.getNome());
 				progettoService.save(progetto);
-				return("redirect:/progetto/visualizza?idSelected="+progetto.getId());
+				redirAttrs.addAttribute("idSelected",progetto.getId());
+				return("redirect:/progetto/visualizza");
 			}
+		     else {
+		    	 redirAttrs.addAttribute("idSelected",form.getId());
+		    	 return("redirect:/progetto/visualizza");
+		     }
 		}
 		if (action.equals("Cancella")){
 			progettoService.delete(form.getId());
@@ -78,8 +89,11 @@ public class ProgettoController {
 			redirAttrs.addFlashAttribute("nomeProgettoVuoto", "nomeProgettoVuoto");
 			redirAttrs.addFlashAttribute("error","true");
 		}
-		if (progettoService.findAll().stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
-			redirAttrs.addFlashAttribute("nomeCodiceProgettoDuplicato", "nomeCodiceProgettoDuplicato");
+		//verifica se ci siano dei progetti con nome o codice uguale
+		List<Progetto> proggettoList= progettoService.findAll();
+		proggettoList.removeIf(p->p.getId()==form.getId().longValue());
+		if (proggettoList.stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
+ 			redirAttrs.addFlashAttribute("nomeCodiceProgettoDuplicato", "nomeCodiceProgettoDuplicato");
 			redirAttrs.addFlashAttribute("error","true");
 		}
 		if (form.getCodice().trim().equals("")) {

@@ -41,7 +41,7 @@ public class FunzionalitaController {
 	public String insFunzionalita(@ModelAttribute FunzionalitaViewCRUDForm form,String action,RedirectAttributes redirAttrs, Model model) {
 		Funzionalita funzionalita= new Funzionalita();
 		if (action.equals("Inserisci")){
-			this.validationFormInterfaccia(redirAttrs,form);
+			this.validationParam(redirAttrs,form);
 			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				funzionalita.setId(0);
 				funzionalita.setInterfaccia(interfacciaService.getInterfaccia(form.getIdInterfaccia()).orElse(null));
@@ -55,8 +55,9 @@ public class FunzionalitaController {
 			return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getIdInterfaccia());
 		}
 		if (action.equals("Modifica")){
-			this.validationFormInterfaccia(redirAttrs,form);
-			if (!redirAttrs.getFlashAttributes().containsKey("nomeFunzionalitaVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceFunzionalitaVuoto"))  {
+			this.validationParam(redirAttrs,form);
+			//if (!redirAttrs.getFlashAttributes().containsKey("nomeFunzionalitaVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceFunzionalitaVuoto"))  {
+			if (!redirAttrs.getFlashAttributes().containsKey("error")) {
 				redirAttrs.getFlashAttributes().remove("nomeCodiceFunzionalitaDuplicato");
 				funzionalita= funzionalitaService.getFunzionalita(form.getId()).orElse(null);
 				funzionalita.setDescrizione(form.getDescrizione());
@@ -79,12 +80,14 @@ public class FunzionalitaController {
 		}
 		return("redirect:/funzionalita/visualizza?idInterfaccia="+form.getIdInterfaccia());
 	}
-	private void  validationFormInterfaccia(RedirectAttributes redirAttrs, FunzionalitaViewCRUDForm form) {
+	private void  validationParam(RedirectAttributes redirAttrs, FunzionalitaViewCRUDForm form) {
 		if (form.getNome().trim().equals("")) {
 			redirAttrs.addFlashAttribute("nomeFunzionalitaVuoto", "nomeFunzionalitaVuoto");
 			redirAttrs.addFlashAttribute("error","true");
 		}
-		if (funzionalitaService.findByInterfacciaId(form.getIdInterfaccia()).stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
+		List<Funzionalita> funzionalitaList=funzionalitaService.findByInterfacciaId(form.getIdInterfaccia());
+		funzionalitaList.removeIf(f->f.getId()==form.getId().longValue());
+		if (funzionalitaList.stream().filter(p->p.getNome().trim().toUpperCase().equals(form.getNome().trim().toUpperCase()) || p.getCodice().trim().equals(form.getCodice().trim())).findAny().orElse(null)!=null) {
 			redirAttrs.addFlashAttribute("nomeCodiceFunzionalitaDuplicato", "nomeCodiceFunzionalitaDuplicato");
 			redirAttrs.addFlashAttribute("error","true");
 		}

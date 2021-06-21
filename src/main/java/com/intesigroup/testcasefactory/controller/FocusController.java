@@ -57,7 +57,8 @@ public class FocusController {
 		}
 		if (action.equals("Modifica")){
 			this.validationParam(redirAttrs, form);
-			if (!redirAttrs.getFlashAttributes().containsKey("nomeFocusVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceFocusVuoto")) {
+			//if (!redirAttrs.getFlashAttributes().containsKey("nomeFocusVuoto") && !redirAttrs.getFlashAttributes().containsKey("codiceFocusVuoto")) {
+			if (!redirAttrs.getFlashAttributes().containsKey("error")) {	
 				redirAttrs.getFlashAttributes().remove("nomeCodiceFocusDuplicato");
 				focus= focusService.getFocus(form.getId()).orElse(null);
 				focus.setDescrizione(form.getDescrizione());
@@ -83,7 +84,9 @@ public class FocusController {
 			redirAttrs.addFlashAttribute("nomeFocusVuoto", "nomeFocusVuoto");
 			redirAttrs.addFlashAttribute("error","true");
 		}
-		if (focusService.findByFunzionalitaId(form.getIdFunzionalita()).stream().filter(p->p.getNome().trim().equals(form.getNome().trim()) || p.getCodice().trim().toUpperCase().equals(form.getCodice().trim().toUpperCase())).findAny().orElse(null)!=null) {
+		List<Focus> focusList=focusService.findByFunzionalitaId(form.getIdFunzionalita());
+		focusList.removeIf(f->f.getId()==form.getId().longValue());
+		if (focusList.stream().filter(p->p.getNome().trim().equals(form.getNome().trim()) || p.getCodice().trim().toUpperCase().equals(form.getCodice().trim().toUpperCase())).findAny().orElse(null)!=null) {
 			redirAttrs.addFlashAttribute("nomeCodiceFocusDuplicato", "nomeCodiceFocusaDuplicato");
 			redirAttrs.addFlashAttribute("error","true");
 		}

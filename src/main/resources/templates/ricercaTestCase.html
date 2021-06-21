@@ -2,103 +2,161 @@
 <html lang="en">
 <head th:insert="generalTemplate.html::headPart" />
 <body>
-	<div class="fixed-top">
-		<header th:insert="generalTemplate.html::headerPart" />
-		<script type="application/javascript" th:src="@{/js/ricercaTestCase.js}" charset="utf-8" defer></script>
-		<form th:action="@{/testCase/ricerca}" th:method="get" id="formRicerca">
-			<input type="hidden" name= "tipoAzione" value="">
-			<div class="container-fluid barra-ricerca">
+	<header th:insert="generalTemplate.html::headerPart" />
+	<script type="application/javascript"
+		th:src="@{/js/ricercaTestCase.js}" charset="utf-8" defer></script>
+	<form th:action="@{/testCase/ricerca}" th:method="get" id="formRicerca">
+		<input type="hidden" name="tipoAzione" value="">
+		<div class="container-fluid barra-ricerca">
 			<div class="" style="background-color: #ffc26c;">
-					<div class="row">
-						<div class="col-lg-2">
-							<div class="form-floating m-2">
-								<select class="form-select" id="idProgetto" name="idProgetto"
-									aria-label="Floating label select example">
-									<option th:if="${progettoList.isEmpty()}" selected th:value="0" th:text="#{ricercaTestCase.formRicerca.progetto.nessunprogetto.combobox}">nessun progetto</option>
-									<option th:if="${!progettoList.isEmpty() && idProgetto==null}" selected th:value="0" th:text="#{ricercaTestCase.formRicerca.progetto.scegliprogetto.combobox}">Scegli progetto</option>
-									<option th:if="${progettoList}" th:each="progetto : ${progettoList}"
-										th:value="${progetto.id}" th:text="${progetto.nome}" th:selected="${progetto.id==idProgetto}"/>
-								</select> <label for="idProgetto" th:text="#{ricercaTestCase.formRicerca.progetto.comboBox.label}">Progetto</label>
-							</div>
+				<div class="row">
+					<div class="col-lg-2">
+						<div class="form-floating m-2">
+							<select class="form-select" id="idProgetto" name="idProgetto"
+								aria-label="Floating label select example">
+								<option th:if="${progettoList.isEmpty()}" selected th:value="-1"
+									th:text="#{ricercaTestCase.formRicerca.progetto.nessunprogetto.combobox}">nessun
+									progetto</option>
+								<option th:if="${!progettoList.isEmpty()}" selected th:value="0"
+									th:text="#{ricercaTestCase.formRicerca.progetto.scegliprogetto.combobox}">Scegli
+									progetto</option>
+								<option th:if="${progettoList}"
+									th:each="progetto : ${progettoList}" th:value="${progetto.id}"
+									th:text="${progetto.nome}"
+									th:selected="${progetto.id==idProgetto}" />
+							</select> <label for="idProgetto"
+								th:text="#{ricercaTestCase.formRicerca.progetto.comboBox.label}">Progetto</label>
 						</div>
-						<div class="col-lg-2">
-							<div class="form-floating m-2">
-								<select class="form-select" id="idInterfaccia" name="idInterfaccia"
-									aria-label="Floating label select example">
-									<option th:if="${interfacciaList.isEmpty()}"selected th:value="0" th:text="#{ricercaTestCase.formRicerca.progetto.nessunainterfaccia.combobox}">nessuna interfaccia</option>
-									<option th:if="${!interfacciaList.isEmpty() && idInterfaccia==0}"selected th:value="0" th:text="#{ricercaTestCase.formRicerca.interfaccia.scegliinterfaccia.combobox}">scegli interfaccia</option>
-									<option th:if="${interfacciaList}" th:each="interfaccia : ${interfacciaList}"
-										th:value="${interfaccia.id}" th:text="${interfaccia.nome}" th:selected="${interfaccia.id==idInterfaccia}"/>
-								</select> <label for="idInterfaccia" th:text="#{ricercaTestCase.formRicerca.interfaccia.comboBox.label}">Interfaccia</label>
-							</div>
+					</div>
+					<div class="col-lg-2">
+						<div class="form-floating m-2">
+							<select class="form-select" id="idInterfaccia"
+								name="idInterfaccia" aria-label="Floating label select example">
+								<option th:if="${interfacciaList.isEmpty()}" selected
+									th:value="0"
+									th:text="#{ricercaTestCase.formRicerca.progetto.nessunainterfaccia.combobox}">nessuna
+									interfaccia</option>
+								<option th:if="${!interfacciaList.isEmpty()}" selected
+									th:value="0"
+									th:text="#{ricercaTestCase.formRicerca.interfaccia.scegliinterfaccia.combobox}">scegli
+									interfaccia</option>
+								<option th:if="${interfacciaList}"
+									th:each="interfaccia : ${interfacciaList}"
+									th:value="${interfaccia.id}" th:text="${interfaccia.nome}"
+									th:selected="${interfaccia.id==idInterfaccia}" />
+							</select> <label for="idInterfaccia"
+								th:text="#{ricercaTestCase.formRicerca.interfaccia.comboBox.label}">Interfaccia</label>
 						</div>
-						<div class="col-lg-2">
-							<div class="form-floating m-2">
-								<select class="form-select" id="idFunzionalita" name="idFunzionalita"
-									aria-label="Floating label select example">
-									<option th:if="${funzionalitaList.isEmpty()}" selected th:value="0" th:text="#{ricercaTestCase.formRicerca.progetto.nessunafunzionalita.combobox}">nessuna funzionalita</option>
-									<option th:if="${!funzionalitaList.isEmpty() && idFunzionalita==0}" selected th:value="0" th:text="#{ricercaTestCase.formRicerca.funzionalita.sceglifunzionalita.combobox}">scegli funzionalita</option>
-									<option th:if="${funzionalitaList}" th:each="funzionalita : ${funzionalitaList}"
-										th:value="${funzionalita.id}" th:text="${funzionalita.nome}" th:selected="${funzionalita.id==idFunzionalita}"/>
-								</select> <label for="idFunzionalita"th:text="#{ricercaTestCase.formRicerca.funzionalita.comboBox.label}">Funzionalita</label>
-							</div>
+					</div>
+					<div class="col-lg-2">
+						<div class="form-floating m-2">
+							<select class="form-select" id="idFunzionalita"
+								name="idFunzionalita" aria-label="Floating label select example">
+								<option th:if="${funzionalitaList.isEmpty()}" selected
+									th:value="0"
+									th:text="#{ricercaTestCase.formRicerca.progetto.nessunafunzionalita.combobox}">nessuna
+									funzionalita</option>
+								<option th:if="${!funzionalitaList.isEmpty()}" selected
+									th:value="0"
+									th:text="#{ricercaTestCase.formRicerca.funzionalita.sceglifunzionalita.combobox}">scegli
+									funzionalita</option>
+								<option th:if="${funzionalitaList}"
+									th:each="funzionalita : ${funzionalitaList}"
+									th:value="${funzionalita.id}" th:text="${funzionalita.nome}"
+									th:selected="${funzionalita.id==idFunzionalita}" />
+							</select> <label for="idFunzionalita"
+								th:text="#{ricercaTestCase.formRicerca.funzionalita.comboBox.label}">Funzionalita</label>
 						</div>
-						<div class="col-lg-2">
-							<div class="form-floating m-2">
-								<select class="form-select" id="idFocus" name="idFocus"
-									aria-label="Floating label select example">
-									<option th:if="${focusList.isEmpty()}" selected th:value="0" th:text="#{ricercaTestCase.formRicerca.focus.nessunfocus.combobox}">nessun focus</option>
-									<option th:if="${!focusList.isEmpty() && idFocus==0}" selected th:value="0"th:text="#{ricercaTestCase.formRicerca.focus.sceglifocus.combobox}">scegli focus</option>
-									<option th:if=${focusList} th:each="focus : ${focusList}"
-										th:value="${focus.id}" th:text="${focus.nome}" th:selected="${focus.id==idFocus}"/>
-								</select> <label for="idFocus" th:text="#{ricercaTestCase.formRicerca.focus.comboBox.label}">Focus</label>
-							</div>
+					</div>
+					<div class="col-lg-2">
+						<div class="form-floating m-2">
+							<select class="form-select" id="idFocus" name="idFocus"
+								aria-label="Floating label select example">
+								<option th:if="${focusList.isEmpty()}" selected th:value="0"
+									th:text="#{ricercaTestCase.formRicerca.focus.nessunfocus.combobox}">nessun
+									focus</option>
+								<option th:if="${!focusList.isEmpty() && idFocus==0}" selected
+									th:value="0"
+									th:text="#{ricercaTestCase.formRicerca.focus.sceglifocus.combobox}">scegli
+									focus</option>
+								<option th:if=${focusList} th:each="focus : ${focusList}"
+									th:value="${focus.id}" th:text="${focus.nome}"
+									th:selected="${focus.id==idFocus}" />
+							</select> <label for="idFocus"
+								th:text="#{ricercaTestCase.formRicerca.focus.comboBox.label}">Focus</label>
 						</div>
-						<div class="col-lg-2 m-2">
-							<button class="btn btn-primary bottone-cerca" id="id-bottone-cerca" role="button" th:text="#{ricercaTestCase.formRicerca.cerca.button}">Cerca</button>
-						</div>
-						
+					</div>
+					<div class="col-lg-2 m-2">
+						<button class="btn btn-primary bottone-cerca"
+							id="id-bottone-cerca" role="button"
+							th:text="#{ricercaTestCase.formRicerca.cerca.button}">Cerca</button>
 					</div>
 				</div>
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 	<div class="container-fluid">
 		<table class="table tabella-testcase">
 			<thead>
 				<tr>
-					<th scope="col" th:text="#{ricercaTestCase.table.testId.columnlabel}">TestId</th>
-					<th scope="col" th:text="#{ricercaTestCase.table.operatore.columnlabel}">Operatore</th>
-					<th scope="col" th:text="#{ricercaTestCase.table.interfaccia.columnlabel}">Interfaccia</th>
-					<th scope="col" th:text="#{ricercaTestCase.table.funzionalita.columnlabel}">Funzionalita</th>
-					<th scope="col" th:text="#{ricercaTestCase.table.focus.columnlabel}">Focus</th>
-					<th scope="col" th:text="#{ricercaTestCase.table.modifica.columnlabel}"> Modifica</th>
-					<th scope="col" th:text="#{ricercaTestCase.table.cancella.columnlabel}"> Cancella</th>
+					<th scope="col"
+						th:text="#{ricercaTestCase.table.testId.columnlabel}">TestId</th>
+					<th scope="col"
+						th:text="#{ricercaTestCase.table.operatore.columnlabel}">Operatore</th>
+					<th scope="col"
+						th:text="#{ricercaTestCase.table.interfaccia.columnlabel}">Interfaccia</th>
+					<th scope="col"
+						th:text="#{ricercaTestCase.table.funzionalita.columnlabel}">Funzionalita</th>
+					<th scope="col"
+						th:text="#{ricercaTestCase.table.focus.columnlabel}">Focus</th>
+					<th scope="col"
+						th:text="#{ricercaTestCase.table.modifica.columnlabel}">
+						Modifica</th>
+					<th scope="col"
+						th:text="#{ricercaTestCase.table.cancella.columnlabel}">
+						Cancella</th>
 				</tr>
 			</thead>
 			<tbody>
-			<form action="/testCase/cancella" method="post">
-				<input type="hidden" name="idProgetto" th:value="${idProgetto}"/>
-				<input type="hidden" name="idInterfaccia" th:value="${idInterfaccia}"/>
-				<input type="hidden" name="idFunzionalita" th:value="${idFunzionalita}"/>
-				<input type="hidden" name="idInterfaccia" th:value="${idFocus}"/>
-				<tr th:each="testCase : ${testCaseList}">
-					<input type="hidden" name="idTestCase" th:value="${testCase.id}"/>
-					<td th:text="${testCase.testId}"></td>
-					<td th:text="${testCase.attore.nome}"></td>
-					<td th:text="${testCase.interfaccia.nome}"></td>
-					<td th:text="${testCase.funzionalita.nome}"></td>
-					<td th:text="${testCase.focus.nome}"></td>
-					<td> 
-						<a class="btn btn-primary" th:href="@{/testCase/preload(idTestCase=${testCase.id})}" role="button" th:text="#{ricercaTestCase.table.modifica.button}">Modifica</a>
-					</td>
-					<td> 
-						<button type="submit" class="btn btn-primary bottone-modifica" id="id-bottone-cerca" th:text="#{ricercaTestCase.table.cancella.button}">Cancella </button>
-					</td>
-					
-				</tr>
-			</form>
+				<form action="/testCase/cancella" method="post">
+					<input type="hidden" name="idProgetto" th:value="${idProgetto}" />
+					<input type="hidden" name="idInterfaccia"
+						th:value="${idInterfaccia}" /> <input type="hidden"
+						name="idFunzionalita" th:value="${idFunzionalita}" /> <input
+						type="hidden" name="idInterfaccia" th:value="${idFocus}" />
+					<tr th:each="testCase : ${testCaseList}">
+						<input type="hidden" name="idTestCase" th:value="${testCase.id}" />
+						<td th:text="${testCase.testId}"></td>
+						<td th:text="${testCase.attore.nome}"></td>
+						<td th:text="${testCase.interfaccia.nome}"></td>
+						<td th:text="${testCase.funzionalita.nome}"></td>
+						<td th:text="${testCase.focus.nome}"></td>
+						<td><a class="btn btn-primary"
+							th:href="@{/testCase/preload(idTestCase=${testCase.id})}"
+							role="button" th:text="#{ricercaTestCase.table.modifica.button}">Modifica</a>
+						</td>
+						<td>
+							<button type="submit" class="btn btn-primary bottone-modifica"
+								id="id-bottone-cerca"
+								th:text="#{ricercaTestCase.table.cancella.button}">Cancella
+							</button>
+						</td>
+
+					</tr>
+				</form>
 			</tbody>
 		</table>
+		<nav aria-label="...">
+			<ul class="pagination">
+				<li th:class= "(!${numPagina} or ${numPagina}==0) ? 'page-item disabled' : 'page-item'">
+					<a class="page-link" href="#" tabindex="-1" aria-disabled="false">Previous</a></li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item active" aria-current="page"><a
+					class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item"><a class="page-link" href="#">Next</a></li>
+			</ul>
+		</nav>
+	</div>
 </body>
 </html>
