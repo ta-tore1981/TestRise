@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+		<head th:insert="generalTemplate.html::headPart"/>
+	<body>
+   		<header th:insert="generalTemplate.html::headerPart"/>
+   		<script type="application/javascript" th:src="@{/js/commonCreazioneCondizioni.js}" charset="utf-8" defer></script>
+        <div  class="alert alert-danger text-center" role="alert" th:if="${nomeCodiceFocusDuplicato}" th:text="#{duplicato.focus.nomecodice.validation}"/>
+   		<div class="container-fluid">
+   			<nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+  			<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  				<ol class="breadcrumb">
+    				<li class="breadcrumb-item"><a th:href="@{/progetto/visualizza(idSelected=${form.idProgetto})}" th:text="${form.nomeProgetto}">nomeProgetto</a></li>
+    				<li class="breadcrumb-item"><a th:href="@{/interfaccia/visualizza(idSelected=${form.idInterfaccia},idProgetto=${form.idProgetto})}" th:text="${form.nomeInterfaccia}">nomeInterfaccia</a></li>
+    				<li class="breadcrumb-item"><a th:href="@{/funzionalita/visualizza(idSelected=${form.idFunzionalita},idInterfaccia=${form.idInterfaccia})}" th:text="${form.nomeFunzionalita}">nomeInterfaccia</a></li>
+    				<li class="breadcrumb-item active" aria-current="page" th:text="${form.nome}">Library</li>
+  				</ol>
+			</nav>
+        	<div class="row">
+            	<div class="menu-list-elements col-md-2">
+          	  		<div class="list-group">
+          	  			<div class="crea-button">
+            	        	<a class="list-group-item list-group-item-action active" th:text="#{crudfocus.form.nuovofocus.button}" th:href="@{/focus/visualizza(idFunzionalita=${form.idFunzionalita})}"/>
+            	   		</div>
+      	             		<a th:each="element : ${focusList}" th:class="${#strings.equals(element.id,form.id)} ? 'list-group-item list-group-item-action selected' :'list-group-item list-group-item-action'" th:text="${element.nome}" th:href="@{/focus/visualizza(idFunzionalita=${form.idFunzionalita},idSelected=${element.id})}"/>
+     	    		</div>
+   		      	</div>
+   		        <!--  form CRUD Focus -->
+   		   		<div class="form-attr col-md-5">
+  		        	<h1 th:text="#{crudfocus.form.titolo.label}">Gestione focus</h1>
+ 	              	<h2 th:if= ${form.id} &le; 0 th:text="#{crudfocus.form.modifica.label}">Modifica</h2>
+				   	<h2 th:unless= ${form.id} &le; 0  th:text="#{crudfocus.form.inserisci.label}">Inserisci</h2>
+				   	
+					<form action="#" th:action="@{/focus/formFocus}" th:object="${form}" method="post">   
+				 		<input type="hidden" th:field="*{id}" >
+				 		<input type="hidden" th:field="*{idFunzionalita}">
+				 			<div class="form-group">
+                        		<label for="funzionalita" th:text="#{crudfocus.form.nome.label}">Nome</label>
+                       			<input type="text" class="form-control" id="funzionalita" th:field="*{nome}"
+								 placeholder="" />
+								 <p th:if="${nomeFocusVuoto}" th:text="#{notnull.focus.nome.validation}" th:class="${nomeFocusVuoto} ? 'alert-danger'"></p>
+                        		<small id="funzionalita-help" class="form-text text-muted" th:text="#{crudfocus.form.nome.help}">obbligatorio</small>
+                        	</div>
+                        	<div class="form-group">
+                        		<label for="codice" th:text="#{crudfocus.form.codice.label}">Codice</label>
+                       		 	<input type="text" class="form-control" id="codice" th:field="*{codice}"
+								 placeholder="" />
+                        		<p th:if="${codiceFocusVuoto}" th:text="#{notnull.focus.codice.validation}" th:class="${codiceFocusVuoto} ? 'alert-danger'"></p>
+                        		<small id="codice-help" class="form-text text-muted" th:text="#{crudfocus.form.codice.help}">obbligatorio</small>
+                        	</div>
+                       		<div class="form-group">
+                        		<label for="codice" th:text="#{crudfocus.form.descrizione.label}">Descrizione</label>
+                       			<input type="text" class="form-control" id="Descrizione" th:field="*{descrizione}"
+							  	 placeholder="" />
+                        		<small id="descrizione-help" class="form-text text-muted">opzionale</small>
+                        	</div>
+                        	<p>
+								<button class="btn btn-dark" type="submit" name="action" value="Inserisci" th:text="#{crudfocus.form.crea.button}"> Inserisci </button>
+								<button class="btn btn-dark"  th:disabled="*{id}==0" type="submit" name="action" th:text="#{crudfocus.form.modifica.button}" value="Modifica">Modifica</button>
+								<button class="btn btn-dark"  th:disabled="*{id}==0" type="submit" name="action" value="Cancella" id="cancella-elemento" th:text="#{crudfocus.form.elimina.button}">Cancella</button>
+								<button class="btn btn-dark"  th:disabled="*{id}==0" type="reset" value="Reset" th:text="#{crudfocus.form.reset.button}">Reset </button>
+							</p>
+							<p>
+								<button class="btn btn-primary" type="submit" name="action" th:value="Funzionalita" th:text="#{crudfocus.form.funzionalita.button}">Funzionalita</button>
+							</p>
+						</form>
+        			</div>      	
+         	</div>
+     	</div> 
+	</body>
+</html>

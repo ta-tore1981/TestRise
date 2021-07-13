@@ -45,7 +45,7 @@ public class Progetto implements Serializable{
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="progetto", orphanRemoval=true)
 	private Set<Attore> Attore=new HashSet<>();
 	
-	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL, mappedBy="progetto", orphanRemoval=true)
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL, mappedBy="progetto", orphanRemoval=true)
 	private Set<TestCase> testCase=new HashSet<>();
 	
 	

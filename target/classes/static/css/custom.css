@@ -1,0 +1,69 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/utilities";
+
+.menu-list-elements {
+    padding: 0px;
+    margin: 0px;
+    position:relative;
+    height: 550px;
+    overflow-y:scroll;
+}
+.crea-button{
+    position: inherit;
+}
+.container-fluid{
+    width: 90%;
+}
+
+.selected {
+	background-color: orange;
+	color:black;
+}
+
+.selected:hover{
+    background-color: orange;
+    color: gray;
+}
+.tabella-attori{
+	margin-top:20px;
+	height: 430px;
+	overflow-y:scroll;
+}
+.listAttrAttori, .listAttrAttori:focus{
+	background: transparent;        
+    border: none;         
+    outline-width: 0;    
+    cursor: default; 
+}
+
+/* sezione ricerca testcase*/
+.table{
+	table-layout:fixed;
+}
+.form-select{
+    background-color:#ffe0b5;
+}
+
+/*.tabella-testcase{
+	margin-top:200px;
+}*/
+
+.page-navigation{
+	margin-top:200px;
+}
+.form-floating{
+	width:200px;
+}
+
+.bottone-cerca{
+	width:200px; 
+	height:57px;
+}
+.barra-ricerca{
+	background-color: #ffc26c;
+}
+
+/* sezione creazione testcase */
+
+

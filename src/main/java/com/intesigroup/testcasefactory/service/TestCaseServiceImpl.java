@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -57,27 +58,30 @@ public class TestCaseServiceImpl implements TestCaseService{
 		return testCaseRepository.countByProgettoId(progettoId);
 	}
 	
-	public Slice<TestCase> getPagingTestCase(Long idProgetto, Long idInterfaccia, Long idFunzionalita,Long idFocus, int pageNum, int numTestCase) {
+	public Slice<TestCase> getPagingTestCase(Long idProgetto, Long idInterfaccia, Long idFunzionalita, Long idFocus, Pageable pagina) {
 		Slice<TestCase> slice = null;
+		if (pagina==null)  pagina=PageRequest.of(0, 20);
+		
 		if (idProgetto!=0 && idInterfaccia!=0 && idFunzionalita!=0  && idFocus!=0) 
-			slice=pagingTestCaseReporitoy.findAllByProgettoIdAndInterfacciaIdAndFunzionalitaIdAndFocusId(idProgetto, idInterfaccia, idFunzionalita,idFocus, PageRequest.of(pageNum, numTestCase, Sort.by("testId")));
+			slice=pagingTestCaseReporitoy.findAllByProgettoIdAndInterfacciaIdAndFunzionalitaIdAndFocusId(idProgetto, idInterfaccia, idFunzionalita,idFocus, pagina);
 		
 		else if (idProgetto!=0 && idInterfaccia!=0 && idFunzionalita!=0) 
-			slice = pagingTestCaseReporitoy.findAllByProgettoIdAndInterfacciaIdAndFunzionalitaId(idProgetto, idInterfaccia, idFunzionalita, PageRequest.of(pageNum, numTestCase, Sort.by("testId")));
+			slice = pagingTestCaseReporitoy.findAllByProgettoIdAndInterfacciaIdAndFunzionalitaId(idProgetto, idInterfaccia, idFunzionalita, pagina);
 		
 		else if (idProgetto!=0 && idInterfaccia!=0) {
-			slice = pagingTestCaseReporitoy.findAllByProgettoIdAndInterfacciaId(idProgetto, idInterfaccia, PageRequest.of(pageNum, numTestCase, Sort.by("testId")));
+			slice = pagingTestCaseReporitoy.findAllByProgettoIdAndInterfacciaId(idProgetto, idInterfaccia, pagina);
 		}
 		else if (idProgetto!=0) {
-			slice=pagingTestCaseReporitoy.findAllByProgettoId(idProgetto, PageRequest.of(pageNum, numTestCase, Sort.by("testId")));
+			slice=pagingTestCaseReporitoy.findAllByProgettoId(idProgetto, pagina);
 		}
 		else {
-			slice = findAll(0, 20);
+			slice = pagingTestCaseReporitoy.findAll(pagina);
 		}
 		return slice;
 		
 	}
-	public Slice<TestCase> findAll(int pageNum, int numTestCase){
-		return pagingTestCaseReporitoy.findAll(PageRequest.of(pageNum,numTestCase ,Sort.by("testId")));
+	@Override
+	public Slice<TestCase> findAll(Pageable pagina) {
+		return pagingTestCaseReporitoy.findAll(pagina);
 	}
 }

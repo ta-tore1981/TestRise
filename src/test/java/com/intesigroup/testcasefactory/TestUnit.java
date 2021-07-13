@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 

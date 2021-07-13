@@ -75,48 +75,56 @@ public class TestCaseController {
 				}
 			}
 			boolean flag=true;
+			// valorizza il progetto e nel caso l'id non esiste ritorna errore
 			Progetto progetto = progettoService.getProgetto(idProgetto).orElse(null);
 			if (progetto==null) {
 				redirAttr.addFlashAttribute("progettoInesistente", "progettoInesistente");
 				flag=false;
 			}
 			else testCase.setProgetto(progetto);
+			// valorizza l'interfaccia  e nel caso l'id non esiste ritorna errore
 			Interfaccia interfaccia = interfacciaService.getInterfaccia(idInterfaccia).orElse(null);
 			if (interfaccia==null && flag) {
 				redirAttr.addFlashAttribute("interfacciaInesistente", "interfacciaInesistente");
 				flag=false;
 			}
 			else testCase.setInterfaccia(interfaccia);	
+			// valorizza funzionalità  e nel caso l'id non esiste ritorna errore
 			Funzionalita funzionalita = funzionalitaService.getFunzionalita(idFunzionalita).orElse(null);
 			if (funzionalita==null && flag) {
 				redirAttr.addFlashAttribute("funzionalitaInesistente", "funzionalitaInesistente");
 					flag=false;
 				}
 			else testCase.setFunzionalita(funzionalita);
+			// valorizza focus e nel caso l'id non esiste ritorna errore
 			Focus focus = focusService.getFocus(idFocus).orElse(null);
 			if (focus==null && flag) {
 				redirAttr.addFlashAttribute("focusInesistente", "focusInesistente");
 				flag=false;
 			}
 			else testCase.setFocus(focus);
+			// valorizza l'attore e nel caso l'id non esiste ritorna errore
 			Attore attore = attoreService.getAttore(idAttore).orElse(null);
 			if (attore==null && flag) {
 				redirAttr.addFlashAttribute("attoreInesistente", "attoreInesistente");
 				flag=false;
 			}
 			else testCase.setAttore(attore);
+			// valorizza l'approccio e nel caso l'id non esiste ritorna errore
 			Approccio approccio= approccioService.findById(idApproccio).orElse(null);
 			if (approccio==null && flag) {
 				redirAttr.addFlashAttribute("approccioInesistente", "approccioInesistente");
 				flag=false;
 			}
 			else testCase.setApproccio(approccio);
+			// valorizza il tipo test e nel caso l'id non esiste ritorna errore
 			TipoTest tipoTest= tipoTestService.findById(idTipoTest).orElse(null);
 			if (tipoTest==null && flag) {
 				redirAttr.addFlashAttribute("tipoTestInesistente", "tipoTestInesistente");
 				flag=false;
 			}
 			else testCase.setTipoTest(tipoTest);
+			
 			testCase.setUseCase(useCase);
 			testCase.setProceduraTest(proceduraTest);
 			testCase.setControlloInterfaccia(controlloInterfaccia);
@@ -131,16 +139,20 @@ public class TestCaseController {
 			testCase.setInstallationTestStorage(installationStorage);
 			testCase.setInstallationTestAltro(installationAltro);
 			testCase.setInstallationTestLog(installationLog);
+			// se non ci sono errore e cioè se redirAttr.getFlashAttributes() è vuoto
 			if (redirAttr.getFlashAttributes().isEmpty()) {
 				long numTest=0;
+				// ricerca il numero progetto per poi creare il testid
 				if (action.equals("crea")) {
 					numTest= testCaseService.countByProgettoId(idProgetto);
 					numTest++;
 				}
 				else numTest = testCase.getNumeroTestCase();
 				testCase.setNumeroTestCase(numTest);
+				// creazione testid
 				testId=progetto.getCodice()+"-"+attore.getCodice()+interfaccia.getCodice()+funzionalita.getCodice()+tipoTest.getCodice()+approccio.getCodice()+"-"+numTest;
 				testCase.setTestId(testId);
+				//salvataggio testcase
 				TestCase newTestCase = testCaseService.save(testCase);
 				if (newTestCase!=null) {
 					redirAttr.addAttribute("idTestCase", newTestCase.getId());
@@ -155,6 +167,7 @@ public class TestCaseController {
 		return "redirect:/testCase/visualizza";
 	}
 	
+	//verifica che tutti i campi obbligatori siano compilati
 	private void validate(Long idProgetto,Long idFunzionalita, Long idInterfaccia,Long idFocus, Long idAttore, Long idApproccio, Long idTipoTest, RedirectAttributes redirAttr) {
 		if (idProgetto==null || idProgetto==0) redirAttr.addFlashAttribute("progettoVuoto","progettoVuoto)");
 		if (idInterfaccia==null || idInterfaccia==0) redirAttr.addFlashAttribute("interfacciaVuoto","interfacciaVuoto)");
@@ -166,9 +179,9 @@ public class TestCaseController {
 	    redirAttr.getFlashAttributes().values().stream().forEach(e->System.out.println("-----------------------"+e.toString()));
 	}
 
-	
+	// endpoint che permette la madifica di un testcase dal suo id
 	@GetMapping("/testCase/preload")
-	public String preoladTestCase(@RequestParam(required=true) Long idTestCase, RedirectAttributes redirAttr) {
+	public String preloadTestCase(@RequestParam(required=true) Long idTestCase, RedirectAttributes redirAttr) {
 		TestCase testCase= testCaseService.findById(idTestCase).orElse(null);
 		if (testCase==null) {
 			redirAttr.addFlashAttribute("testCaseInesistente", "testCaseInesistente");
@@ -200,7 +213,7 @@ public class TestCaseController {
 		redirAttr.addAttribute("testId", testCase.getTestId());
 		return "redirect:/testCase/visualizza";
 	}
-	
+	//visualizzazione testCase
 	@GetMapping("/testCase/visualizza")
 	public String testCaseVisualizza(@RequestParam(required=false, name="idTestCase") Long idTestCase, 
 			@RequestParam(required=false) Long idProgetto, @RequestParam(required=false) Long idInterfaccia, 
@@ -235,7 +248,7 @@ public class TestCaseController {
 		List<Attore> attoreList= new ArrayList<Attore>();
 		boolean flag = true;
 		//valorizzo la lista delle interfacce nel caso sia valorizzato il progetto del testCase
-		//il flag risultera vero fono al momento che id idProgetto, idInterfaccia, idFunzioanlita sono diversi da 0
+		//il flag risultera vero fino al momento che id idProgetto, idInterfaccia, idFunzioanlita sono diversi da 0
 		if (idProgetto!= null && idProgetto!=0) { 
 			interfacciaList = interfacciaService.findByProgettoId(idProgetto);
 			interfacciaList.sort(Comparator.comparing(Interfaccia::getId));
@@ -246,8 +259,9 @@ public class TestCaseController {
 		model.addAttribute("interfacciaList", interfacciaList);
 		model.addAttribute("attoreList", attoreList);
 		//valorizzo la lista delle funzionalita nel caso sia valorizzata l'interfaccia del testCase
-		if (idFunzionalita!= null && idInterfaccia!=0 && flag)  {
-			funzionalitaList = funzionalitaService.findByProgettoId(idInterfaccia);
+		if (idFunzionalita!= null && idInterfaccia!=0 && idAttore!=0 && flag)  {
+			funzionalitaList=new ArrayList<Funzionalita>(attoreService.getAttore(idAttore).get().getFunzionalita());
+			//funzionalitaList = funzionalitaService.findByProgettoId(idInterfaccia);
 			funzionalitaList.sort(Comparator.comparing(Funzionalita::getId));
 			if (funzionalitaList.isEmpty()) flag=false;
 		}
